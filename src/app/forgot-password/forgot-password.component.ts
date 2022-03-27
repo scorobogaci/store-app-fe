@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
+import {Auth} from "aws-amplify";
+import {Router} from "@angular/router";
+import {noop} from "rxjs";
 
 @Component({
   selector: 'app-forgot-password',
@@ -13,14 +16,14 @@ export class ForgotPasswordComponent implements OnInit {
   });
 
   resetPasswordForm: FormGroup = new FormGroup({
-    code: new FormControl(''),
+    confirmationCode: new FormControl(''),
     newPassword: new FormControl(''),
     confirmNewPassword: new FormControl(''),
   });
 
   public verificationCodeSent: boolean
 
-  constructor() {
+  constructor(private router: Router) {
     this.verificationCodeSent = false
   }
 
@@ -28,9 +31,21 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   public sendVerificationCode(): void {
-    this.verificationCodeSent = true
+    Auth.forgotPassword(this.sendVerificationCodeForm.controls['email'].value)
+      .then(data => {
+        console.log('Verification code sent', data)
+        this.verificationCodeSent = true
+      })
+      .catch(err => console.log('Error while sending verification flow', err));
   }
 
   public resetPassword(): void {
+    Auth.forgotPasswordSubmit(this.sendVerificationCodeForm.controls['email'].value,
+      this.resetPasswordForm.controls['confirmationCode'].value, this.resetPasswordForm.controls['newPassword'].value)
+      .then(data => {
+        console.log('Password reset', data)
+        this.router.navigate(['home']).then(noop)
+      })
+      .catch(err => console.log('Error while password reset', err));
   }
 }
