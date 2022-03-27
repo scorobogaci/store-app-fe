@@ -14,8 +14,13 @@
         </mat-form-field>
       </p>
 
-      <div class="button">
-        <button (click)="signIn()" type="submit" mat-button>Login</button>
+
+      <p>
+        <button style="width: 100%" (click)="signIn()" type="submit" mat-raised-button color="primary">Login</button>
+      </p>
+
+      <div class="forgot-password">
+        <a style="color: gray;cursor: pointer" (click)="forgotPassword()">Forgot password ?</a>
       </div>
 
     </form>

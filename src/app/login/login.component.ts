@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
+import {Router} from "@angular/router";
+import {noop} from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -12,7 +14,7 @@ export class LoginComponent implements OnInit {
     password: new FormControl(''),
   });
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
@@ -20,6 +22,10 @@ export class LoginComponent implements OnInit {
 
   public signIn(): void {
     console.log("logging in")
+  }
+
+  public forgotPassword(): void {
+    this.router.navigate(['forgot-password']).then(noop)
   }
 
 }
