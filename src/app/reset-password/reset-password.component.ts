@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-reset-password',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ResetPasswordComponent implements OnInit {
 
-  constructor() { }
+  form: FormGroup = new FormGroup({
+    newPassword: new FormControl(''),
+    confirmNewPassword: new FormControl(''),
+  });
+
+  constructor() {
+  }
 
   ngOnInit(): void {
+  }
+
+  public resetPassword(): void {
+    console.log("reset password invoked")
   }
 
 }
