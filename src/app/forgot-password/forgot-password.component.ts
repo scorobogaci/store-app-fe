@@ -12,13 +12,13 @@ import {noop} from "rxjs";
 export class ForgotPasswordComponent implements OnInit {
 
   sendVerificationCodeForm: FormGroup = new FormGroup({
-    email: new FormControl(''),
+    email: new FormControl(),
   });
 
   resetPasswordForm: FormGroup = new FormGroup({
-    confirmationCode: new FormControl(''),
-    newPassword: new FormControl(''),
-    confirmNewPassword: new FormControl(''),
+    confirmationCode: new FormControl(),
+    newPassword: new FormControl(),
+    confirmNewPassword: new FormControl(),
   });
 
   public verificationCodeSent: boolean
