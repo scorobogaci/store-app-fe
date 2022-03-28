@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Route, Router} from "@angular/router";
+import {Auth} from "aws-amplify";
+import {noop} from "rxjs";
 
 @Component({
   selector: 'app-home',
@@ -7,9 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) {
+  }
 
   ngOnInit(): void {
+  }
+
+  public logout(): void {
+    Auth.signOut().then(
+      () => {
+        this.router.navigate(['login']).then(noop);
+      },
+      (error) => {
+        console.log('Error to sign out the user : ', error);
+      }
+    );
   }
 
 }
