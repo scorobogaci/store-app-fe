@@ -18,12 +18,8 @@ export class HomeComponent implements OnInit {
 
   public logout(): void {
     Auth.signOut().then(
-      () => {
-        this.router.navigate(['login']).then(noop);
-      },
-      (error) => {
-        console.log('Error to sign out the user : ', error);
-      }
+      () => this.router.navigate(['login']).then(noop),
+      (error) => console.log('Error to sign out the user : ', error)
     );
   }
 
