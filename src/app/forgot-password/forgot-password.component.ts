@@ -38,7 +38,7 @@ export class ForgotPasswordComponent implements OnInit {
   public sendVerificationCode(): void {
     this.verificationCodeErrorMessage = ''
     Auth.forgotPassword(this.sendVerificationCodeForm.controls['email'].value)
-      .then(data => {
+      .then(() => {
         this.verificationCodeSent = true
       })
       .catch(err => {
@@ -56,7 +56,7 @@ export class ForgotPasswordComponent implements OnInit {
 
     Auth.forgotPasswordSubmit(this.sendVerificationCodeForm.controls['email'].value,
       this.resetPasswordForm.controls['confirmationCode'].value, this.resetPasswordForm.controls['newPassword'].value)
-      .then(data => {
+      .then(() => {
         this.router.navigate(['home']).then(noop)
       })
       .catch(err => {
