@@ -3,7 +3,7 @@ import {Config} from "./config-definition";
 export const CONFIG_PROD: Config = {
   aws: {
     authenticationFlowType: 'USER_PASSWORD_AUTH',
-    userPoolId: 'eu-central-1_zpjeO41CV',
-    userPoolWebClientId: '52n7h9pdn257i04ha1j4igroa2',
+    userPoolId: 'us-east-1_EMir1nTY8',
+    userPoolWebClientId: '7l8hivubtf6s7qr9184bci872r',
   }
 };
