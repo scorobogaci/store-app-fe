@@ -68,7 +68,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "plansoft:build:development"
+            "browserTarget": "store-app-front-end:build:development"
           },
           "configurations": {
             "production": {
