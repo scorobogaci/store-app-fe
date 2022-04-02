@@ -6,6 +6,7 @@ import {catchError, map} from 'rxjs/operators';
 import {Auth} from "aws-amplify";
 import {Router} from "@angular/router";
 import {Nullable} from "../types";
+import {LOGIN_PAGE} from "../constants";
 
 @Injectable({
   providedIn: 'root'
@@ -15,33 +16,32 @@ export class AuthService {
   constructor(private router: Router) {
   }
 
-  public login(): Observable<CognitoUserSession | void> {
+  public login(): Observable<CognitoUserSession> {
     return fromPromise(Auth.currentSession()).pipe(
       catchError((error) => {
-        this.router.navigate(['/login']).then(noop, noop);
+        this.router.navigate([LOGIN_PAGE]).then(noop, noop);
         return throwError(error);
       })
     );
   }
 
-  public singOut(): void {
-    Auth.signOut().then(
-      () => {
-        this.router.navigate(['logout_callback']).then(noop, noop);
-      },
-      () => {
-        console.log('logout error');
-      }
+  public getUserGroups(): Observable<string[]> {
+    return fromPromise(Auth.currentSession()).pipe(
+      map((session: CognitoUserSession) => {
+        if (session.isValid()) {
+          return session.getIdToken().payload['cognito:groups']
+        } else {
+          return [];
+        }
+      }),
+      catchError((error) => {
+        return throwError(error);
+      })
     );
   }
 
   public isAuthenticated(): Observable<boolean> {
     return this.login().pipe(map(() => true));
-  }
-
-  public async getToken() {
-    const token = await Auth.currentSession()
-    return token.getIdToken().getJwtToken()
   }
 
   public getAccessToken(): Observable<Nullable<string>> {

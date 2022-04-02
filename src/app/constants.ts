@@ -1,0 +1,6 @@
+export const ADMINISTRATORS_GROUP = 'administrator'
+export const HOME_PAGE = 'home'
+export const RESET_PASSWORD_PAGE = 'reset-password'
+export const ADD_USER_PAGE = 'add-user'
+export const FORGOT_PASSWORD_PAGE = 'add-user'
+export const LOGIN_PAGE = 'login'

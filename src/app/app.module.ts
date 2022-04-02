@@ -15,6 +15,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {ForgotPasswordComponent} from './forgot-password/forgot-password.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptor} from "./auth.interceptor";
+import { AddUserComponent } from './add-user/add-user.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {AuthInterceptor} from "./auth.interceptor";
     LoginComponent,
     ResetPasswordComponent,
     HomeComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    AddUserComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +41,7 @@ import {AuthInterceptor} from "./auth.interceptor";
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
