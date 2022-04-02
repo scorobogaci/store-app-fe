@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("invoking api service from home page")
-    this.apiService.createUser()
+    this.apiService.createUserResources()
   }
 
   public logout(): void {

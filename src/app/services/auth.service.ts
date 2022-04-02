@@ -39,6 +39,11 @@ export class AuthService {
     return this.login().pipe(map(() => true));
   }
 
+  public async getToken() {
+    const token = await Auth.currentSession()
+    return token.getIdToken().getJwtToken()
+  }
+
   public getAccessToken(): Observable<Nullable<string>> {
     return fromPromise(Auth.currentSession()).pipe(
       map((session: CognitoUserSession) => {

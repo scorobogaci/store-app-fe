@@ -3,5 +3,6 @@ export interface Config {
     authenticationFlowType: string
     userPoolId: string;
     userPoolWebClientId: string;
-  }
+  },
+  baseApiUrl: string
 }

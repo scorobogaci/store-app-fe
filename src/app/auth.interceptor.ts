@@ -1,9 +1,7 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {from, Observable} from "rxjs";
 import {Injectable} from "@angular/core";
 import {AuthService} from "./services/auth.service";
-import {map, take} from "rxjs/operators";
-import {Nullable} from "./types";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -11,18 +9,18 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    return from(this.handle(req, next))
+  }
 
-    this.authService.getAccessToken().pipe(take(1)).subscribe(token => {
-      console.log("we actually have the token, but after : ", token)
-      req = req.clone({
-        setHeaders: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'Accept': 'application/json',
-          'Authorization': `${token}`,
-        },
-      });
+  async handle(req: HttpRequest<any>, next: HttpHandler) {
+    const authToken = await this.authService.getAccessToken().toPromise()
+    const authReq = req.clone({
+      setHeaders: {
+        Authorization: authToken!
+      }
     })
-    return next.handle(req);
+
+    return next.handle(authReq).toPromise()
   }
 
 }
