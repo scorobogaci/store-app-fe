@@ -15,11 +15,6 @@ mat-card-content {
   justify-content: center;
 }
 
-.my-class{
-  width: 100px!important;
-  min-width: unset!important;
-}
-
 .forgot-password{
   display: flex;
   justify-content: center;

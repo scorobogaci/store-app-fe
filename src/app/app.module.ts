@@ -16,6 +16,7 @@ import {ForgotPasswordComponent} from './forgot-password/forgot-password.compone
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptor} from "./auth.interceptor";
 import { AddUserComponent } from './add-user/add-user.component';
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { AddUserComponent } from './add-user/add-user.component';
     MatCardModule,
     MatInputModule,
     MatButtonModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSelectModule
   ],
   providers: [
     {

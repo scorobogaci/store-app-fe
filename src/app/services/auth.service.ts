@@ -58,4 +58,10 @@ export class AuthService {
       })
     );
   }
+
+  public signOut(): void {
+    Auth.signOut().then(() => {
+      this.router.navigate([LOGIN_PAGE]).then(noop)
+    })
+  }
 }
