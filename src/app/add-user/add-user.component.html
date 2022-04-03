@@ -14,15 +14,6 @@
         </mat-form-field>
       </p>
 
-
-      <p>
-        <mat-form-field>
-          <input type="text" matInput placeholder="Create new company" formControlName="company">
-        </mat-form-field>
-      </p>
-
-      <p style="text-align: center">or select existing one</p>
-
       <mat-form-field>
         <mat-label>Company</mat-label>
         <mat-select>
@@ -31,6 +22,14 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+
+      <p style="text-align: center">or create new company</p>
+
+      <p>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Create new company" formControlName="company">
+        </mat-form-field>
+      </p>
 
       <p>
         <button style="width: 100%" (click)="addUser()" type="submit" mat-raised-button color="primary">Add user

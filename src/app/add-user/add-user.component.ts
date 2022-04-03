@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {AuthService} from "../services/auth.service";
+import {ApiService} from "../services/api.service";
 
 @Component({
   selector: 'app-add-user',
@@ -18,18 +19,20 @@ export class AddUserComponent implements OnInit {
     company: new FormControl(),
   });
 
-  companies: string[] = ['Nike', 'Reebok', 'Jordan', 'Adidas', 'Puma', 'Under Armour']
+  companies: string[] = []
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private apiService: ApiService) {
   }
 
   ngOnInit(): void {
+    this.apiService.getCompanies().then(companies => {
+      this.companies = companies
+    })
   }
 
   public addUser(): void {
     this.displaySuccessConfirmationMessage = true
     this.form.reset()
-    console.log("Adding user to cognito")
   }
 
   public logout(): void {

@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {AuthService} from "./auth.service";
 import {HttpClient} from "@angular/common/http";
 import {CONFIG} from "../config/config";
-import {Auth} from "aws-amplify";
 
 @Injectable({
   providedIn: 'root'
@@ -17,18 +16,14 @@ export class ApiService {
     this.http.post(CONFIG.baseApiUrl.concat(createUserResourcesUri), '').subscribe(response => {
       console.log("got back the response from api gateway : ", response)
     })
+  }
 
-    // get user attributes
-    Auth.currentAuthenticatedUser().then(currentUser => {
-      console.log("current authenticated user : ", currentUser)
-    })
-
-    // get user groups
-    Auth.currentSession().then(session => {
-      if (session) {
-        const userGroup = session.getIdToken().payload['cognito:groups']
-        console.log("user group : ", userGroup[0])
-      }
+  public async getCompanies(): Promise<string[]> {
+    const getCompaniesResourceUri = '/get-companies'
+    return await new Promise((resolve, reject) => {
+      this.http.get<string[]>(CONFIG.baseApiUrl.concat(getCompaniesResourceUri)).subscribe(companies => {
+        resolve(companies)
+      })
     })
   }
 }
