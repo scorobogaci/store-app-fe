@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Route, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {Auth} from "aws-amplify";
 import {noop} from "rxjs";
-import {ApiService} from "../services/api.service";
 
 @Component({
   selector: 'app-home',
@@ -11,12 +10,10 @@ import {ApiService} from "../services/api.service";
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private router: Router, private apiService: ApiService) {
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
-    console.log("invoking api service from home page")
-    this.apiService.createUserResources()
   }
 
   public logout(): void {

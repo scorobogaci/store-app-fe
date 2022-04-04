@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {AuthService} from "../services/auth.service";
 import {ApiService} from "../services/api.service";
+import {AddUserRequest} from "../types";
 
 @Component({
   selector: 'app-add-user',
@@ -25,12 +26,34 @@ export class AddUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.apiService.getCompanies().then(companies => {
-      this.companies = companies
-    })
+
+    this.apiService.getCompanies().subscribe(
+      response => {
+        this.companies = response.companies
+      },
+      error => console.log('error : ', error))
   }
 
   public addUser(): void {
+
+    console.log("add user fired")
+    const addUserRequest: AddUserRequest = {
+      email: 'zulib@gmail.com',
+      username: 'zulib',
+      isNew: true,
+      company: 'zulib'
+    }
+
+    this.apiService.addUser(addUserRequest).subscribe(
+      response => {
+        console.log("response : ", response)
+      },
+      error => {
+        console.log("error : ", error)
+      }
+    )
+
+    console.log()
     this.displaySuccessConfirmationMessage = true
     this.form.reset()
   }
