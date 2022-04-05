@@ -15,8 +15,11 @@ import {MatButtonModule} from "@angular/material/button";
 import {ForgotPasswordComponent} from './forgot-password/forgot-password.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptor} from "./auth.interceptor";
-import { AddUserComponent } from './add-user/add-user.component';
+import {AddUserComponent} from './add-user/add-user.component';
 import {MatSelectModule} from "@angular/material/select";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {OverlayContainer} from "@angular/cdk/overlay";
+import {AppOverlayContainer} from "./services/app-overlay-container";
 
 @NgModule({
   declarations: [
@@ -36,7 +39,8 @@ import {MatSelectModule} from "@angular/material/select";
     MatInputModule,
     MatButtonModule,
     HttpClientModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSnackBarModule
   ],
   providers: [
     {
@@ -44,6 +48,9 @@ import {MatSelectModule} from "@angular/material/select";
       useClass: AuthInterceptor,
       multi: true
     },
+    {
+      provide: OverlayContainer, useExisting: AppOverlayContainer
+    }
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
