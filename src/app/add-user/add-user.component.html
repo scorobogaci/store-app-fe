@@ -19,28 +19,26 @@
           <mat-form-field>
             <mat-label>Company</mat-label>
             <mat-select formControlName="existingCompany">
-              <mat-option [value]="0">Onboard new</mat-option>
+              <mat-option [value]="'new_company'">Onboard new</mat-option>
               <mat-option *ngFor="let company of companies" [value]="company">
                 {{company}}
               </mat-option>
             </mat-select>
           </mat-form-field>
 
-          <p style="text-align: center">onboard new company</p>
-
-          <p>
+          <p *ngIf="displayNewCompanyCreationInput">
             <mat-form-field>
               <input type="text" matInput placeholder="Company name" formControlName="company">
             </mat-form-field>
           </p>
 
-          <p style="padding-bottom: 30px">
+          <p style="padding-top: 30px">
             <button style="width: 100%" (click)="addUser(createUserContainer)" type="submit" mat-raised-button
                     color="primary">Add user
             </button>
           </p>
 
-          <p>
+          <p style="padding-top: 15px">
             <button style="width: 100%" (click)="logout()" type="submit" mat-raised-button color="accent">Logout
             </button>
           </p>

@@ -13,11 +13,8 @@ import {AppOverlayContainer} from "../services/app-overlay-container";
 })
 export class AddUserComponent implements OnInit {
   snackbarRef: MatSnackBarRef<SimpleSnackBar> | undefined;
-  successConfirmationMessage = 'Nice! User has been onboarded'
-  displaySuccessConfirmationMessage = false
   emptyString = ''
-
-  private formInitialValues: any
+  public displayNewCompanyCreationInput = false
 
   form: FormGroup = new FormGroup({
     email: new FormControl(this.emptyString, [Validators.required]),
@@ -29,7 +26,6 @@ export class AddUserComponent implements OnInit {
   companies: string[] = []
 
   constructor(private authService: AuthService, private apiService: ApiService, private snackBar: MatSnackBar, private appOverlayContainer: AppOverlayContainer) {
-    this.formInitialValues = this.form.value
   }
 
   ngOnInit(): void {
@@ -38,6 +34,14 @@ export class AddUserComponent implements OnInit {
         this.companies = response.companies
       },
       error => console.log('error : ', error))
+
+    this.form.get('existingCompany')!.valueChanges.subscribe(value => {
+      this.displayNewCompanyCreationInput = 'new_company' === value;
+    })
+
+    this.snackbarRef?.onAction().subscribe((action) => {
+      console.log("snackbar action triggered : ", action)
+    })
   }
 
   displaySnack(
@@ -62,15 +66,15 @@ export class AddUserComponent implements OnInit {
     }, 100);
   }
 
+
   public addUser(container: HTMLElement): void {
-    this.displaySnack(container, 'Error message or success message to be displayed in here', 'Close')
 
     if (this.emptyString !== this.form.controls['company'].value) {
       this.form.controls['existingCompany'].clearValidators()
       this.form.controls['existingCompany'].updateValueAndValidity();
     }
 
-    if (this.form.controls['existingCompany'].value.length > 1) {
+    if (this.form.controls['existingCompany'].value !== 'new_company') {
       this.form.controls['company'].clearValidators()
       this.form.controls['company'].updateValueAndValidity();
     }
@@ -79,27 +83,36 @@ export class AddUserComponent implements OnInit {
       return
     }
 
-    console.log("form is valid : ")
-
-
     const addUserRequest: AddUserRequest = {
       email: this.form.controls['email'].value,
       username: this.form.controls['email'].value,
       company: this.form.controls['company'].value,
-      isNew: false
+      isNew: true
     }
 
-    // this.apiService.addUser(addUserRequest).subscribe(
-    //   response => {
-    //     console.log("response : ", response)
-    //   },
-    //   error => {
-    //     console.log("error : ", error)
-    //   }
-    // )
+    if (this.form.controls['existingCompany'].value === 'new_company') {
+      addUserRequest.isNew = true
+      addUserRequest.company = this.form.controls['company'].value
+    } else {
+      addUserRequest.isNew = false
+      addUserRequest.company = this.form.controls['existingCompany'].value
+    }
 
-    this.displaySuccessConfirmationMessage = true
-    AddUserComponent.reloadPage()
+    console.log("addUserRequest : ", addUserRequest)
+
+    this.apiService.addUser(addUserRequest).subscribe(
+      response => {
+        console.log("response : ", response)
+        this.displaySnack(container, "Congratulations! New user has been onboarded", 'Close')
+      },
+      error => {
+        console.log("error : ", error)
+        console.log("error.error : ", error.error.errorMessage)
+        this.displaySnack(container, error.error.errorMessage, 'Close')
+      }
+    )
+
+    //AddUserComponent.reloadPage()
   }
 
   private static reloadPage(): void {
