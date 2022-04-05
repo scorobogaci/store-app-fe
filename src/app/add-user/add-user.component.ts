@@ -12,8 +12,11 @@ import {AppOverlayContainer} from "../services/app-overlay-container";
   styleUrls: ['./add-user.component.css']
 })
 export class AddUserComponent implements OnInit {
-  snackbarRef: MatSnackBarRef<SimpleSnackBar> | undefined;
-  emptyString = ''
+  private snackbarRef: MatSnackBarRef<SimpleSnackBar> | undefined;
+  private gotItAction = 'Got it!'
+  private closeAction = 'Close'
+  private emptyString = ''
+  public blockSubmitButton = false
   public displayNewCompanyCreationInput = false
 
   form: FormGroup = new FormGroup({
@@ -25,7 +28,10 @@ export class AddUserComponent implements OnInit {
 
   companies: string[] = []
 
-  constructor(private authService: AuthService, private apiService: ApiService, private snackBar: MatSnackBar, private appOverlayContainer: AppOverlayContainer) {
+  constructor(private authService: AuthService,
+              private apiService: ApiService,
+              private snackBar: MatSnackBar,
+              private appOverlayContainer: AppOverlayContainer) {
   }
 
   ngOnInit(): void {
@@ -38,34 +44,7 @@ export class AddUserComponent implements OnInit {
     this.form.get('existingCompany')!.valueChanges.subscribe(value => {
       this.displayNewCompanyCreationInput = 'new_company' === value;
     })
-
-    this.snackbarRef?.onAction().subscribe((action) => {
-      console.log("snackbar action triggered : ", action)
-    })
   }
-
-  displaySnack(
-    overlayContainerWrapper: HTMLElement,
-    message: string,
-    action: string
-  ): void {
-    if (overlayContainerWrapper === null) {
-      return;
-    }
-
-    if (this.snackbarRef) {
-      this.snackbarRef.dismiss();
-    }
-
-    setTimeout(() => {
-      this.appOverlayContainer.appendToCustomWrapper(overlayContainerWrapper);
-
-      this.snackbarRef = this.snackBar.open(message, action, {
-        duration: 0
-      });
-    }, 100);
-  }
-
 
   public addUser(container: HTMLElement): void {
 
@@ -98,29 +77,50 @@ export class AddUserComponent implements OnInit {
       addUserRequest.company = this.form.controls['existingCompany'].value
     }
 
-    console.log("addUserRequest : ", addUserRequest)
-
+    this.blockSubmitButton = true
     this.apiService.addUser(addUserRequest).subscribe(
-      response => {
-        console.log("response : ", response)
-        this.displaySnack(container, "Congratulations! New user has been onboarded", 'Close')
+      () => {
+        this.displaySnack(container, "Congratulations! New user has been onboarded", this.closeAction)
       },
       error => {
+        this.blockSubmitButton = false
         console.log("error : ", error)
-        console.log("error.error : ", error.error.errorMessage)
-        this.displaySnack(container, error.error.errorMessage, 'Close')
+        this.displaySnack(container, error.error.errorMessage, this.gotItAction)
       }
     )
-
-    //AddUserComponent.reloadPage()
-  }
-
-  private static reloadPage(): void {
-    location.reload()
   }
 
   public logout(): void {
     this.authService.signOut()
+  }
+
+  private displaySnack(overlayContainerWrapper: HTMLElement, message: string, action: string): void {
+    if (overlayContainerWrapper === null) {
+      return;
+    }
+
+    if (this.snackbarRef) {
+      this.snackbarRef.dismiss();
+    }
+
+    setTimeout(() => {
+      this.appOverlayContainer.appendToCustomWrapper(overlayContainerWrapper);
+
+      this.snackbarRef = this.snackBar.open(message, action, {
+        duration: 0
+      });
+
+      this.snackbarRef!.onAction().subscribe(() => {
+        if (action === this.closeAction) {
+          AddUserComponent.reloadPage()
+        }
+      })
+    }, 100);
+
+  }
+
+  private static reloadPage(): void {
+    location.reload()
   }
 
 }

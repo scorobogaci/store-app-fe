@@ -34,16 +34,17 @@
 
           <p style="padding-top: 30px">
             <button style="width: 100%" (click)="addUser(createUserContainer)" type="submit" mat-raised-button
-                    color="primary">Add user
-            </button>
-          </p>
-
-          <p style="padding-top: 15px">
-            <button style="width: 100%" (click)="logout()" type="submit" mat-raised-button color="accent">Logout
+                    color="primary" [disabled]="blockSubmitButton">Add user
             </button>
           </p>
 
         </form>
+
+        <p style="padding-top: 15px">
+          <button style="width: 100%" (click)="logout()" mat-raised-button color="accent">Logout
+          </button>
+        </p>
+
       </mat-card-content>
     </mat-card>
   </div>
