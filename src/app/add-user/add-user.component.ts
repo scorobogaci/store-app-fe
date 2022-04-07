@@ -66,7 +66,7 @@ export class AddUserComponent implements OnInit {
 
     const addUserRequest: AddUserRequest = {
       email: this.form.controls['email'].value,
-      username: this.form.controls['email'].value,
+      username: this.form.controls['username'].value,
       company: this.form.controls['company'].value,
       isNewCompany: true,
       isCompanyAdministrator: this.form.controls['isCompanyAdministrator'].value
