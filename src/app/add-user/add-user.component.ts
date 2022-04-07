@@ -16,6 +16,7 @@ export class AddUserComponent implements OnInit {
   private gotItAction = 'Got it!'
   private closeAction = 'Close'
   private emptyString = ''
+  public companyRegex = new RegExp('^[a-zA-Z0-9_ .-]*$')
   public blockSubmitButton = false
   public displayNewCompanyCreationInput = false
 
@@ -24,6 +25,7 @@ export class AddUserComponent implements OnInit {
     username: new FormControl(this.emptyString, [Validators.required]),
     company: new FormControl(this.emptyString, [Validators.required]),
     existingCompany: new FormControl(this.emptyString, [Validators.required]),
+    isCompanyAdministrator: new FormControl(false),
   });
 
   companies: string[] = []
@@ -66,14 +68,15 @@ export class AddUserComponent implements OnInit {
       email: this.form.controls['email'].value,
       username: this.form.controls['email'].value,
       company: this.form.controls['company'].value,
-      isNew: true
+      isNewCompany: true,
+      isCompanyAdministrator: this.form.controls['isCompanyAdministrator'].value
     }
 
     if (this.form.controls['existingCompany'].value === 'new_company') {
-      addUserRequest.isNew = true
+      addUserRequest.isNewCompany = true
       addUserRequest.company = this.form.controls['company'].value
     } else {
-      addUserRequest.isNew = false
+      addUserRequest.isNewCompany = false
       addUserRequest.company = this.form.controls['existingCompany'].value
     }
 

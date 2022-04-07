@@ -20,6 +20,10 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {OverlayContainer} from "@angular/cdk/overlay";
 import {AppOverlayContainer} from "./services/app-overlay-container";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatIconModule} from "@angular/material/icon";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatFormFieldModule} from "@angular/material/form-field";
 
 @NgModule({
   declarations: [
@@ -40,7 +44,14 @@ import {AppOverlayContainer} from "./services/app-overlay-container";
     MatButtonModule,
     HttpClientModule,
     MatSelectModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatMenuModule,
+    MatIconModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+  ],
+  exports: [
+    MatInputModule
   ],
   providers: [
     {

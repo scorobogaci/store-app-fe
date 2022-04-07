@@ -28,8 +28,14 @@
 
           <p *ngIf="displayNewCompanyCreationInput">
             <mat-form-field>
-              <input type="text" matInput placeholder="Company name" formControlName="company">
+              <input type="text" matInput placeholder="Company name" formControlName="company" [pattern]="companyRegex">
             </mat-form-field>
+          </p>
+
+          <p>
+            <mat-checkbox formControlName="isCompanyAdministrator">Mark as company
+              administrator
+            </mat-checkbox>
           </p>
 
           <p style="padding-top: 30px">

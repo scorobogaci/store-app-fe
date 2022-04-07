@@ -8,7 +8,8 @@ export interface AddUserRequest {
   email: string;
   username: string
   company: string
-  isNew: boolean
+  isNewCompany: boolean
+  isCompanyAdministrator: boolean
 }
 
 export interface AddUserResponse {
