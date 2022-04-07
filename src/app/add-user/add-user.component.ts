@@ -17,14 +17,15 @@ export class AddUserComponent implements OnInit {
   private gotItAction = 'Got it!'
   private closeAction = 'Close'
   public companyRegex = new RegExp('^[a-zA-Z0-9_ .-]*$')
-  public noEmptySpacesRegex = new RegExp('/^(\\s+\\S+\\s*)*(?!\\s).*$/')
+  public usernameRegex = new RegExp('^[a-zA-Z0-9_.-]*$')
+  public doNotAllowOnlyWhiteSpacesRegex = new RegExp('^(\\s+\\S+\\s*)*(?!\\s).*$')
   public blockSubmitButton = false
   public displayNewCompanyCreationInput = false
 
   form: FormGroup = new FormGroup({
     email: new FormControl(EMPTY_STRING, [Validators.required]),
-    username: new FormControl(EMPTY_STRING, [Validators.required]),
-    company: new FormControl(EMPTY_STRING, [Validators.required]),
+    username: new FormControl(EMPTY_STRING, [Validators.required, Validators.pattern(this.doNotAllowOnlyWhiteSpacesRegex), Validators.pattern(this.usernameRegex)]),
+    company: new FormControl(EMPTY_STRING, [Validators.required, Validators.pattern(this.doNotAllowOnlyWhiteSpacesRegex), Validators.pattern(this.companyRegex)]),
     existingCompany: new FormControl(EMPTY_STRING, [Validators.required]),
     isCompanyAdministrator: new FormControl(false),
   });

@@ -12,7 +12,7 @@
 
           <p>
             <mat-form-field>
-              <input type="text" matInput placeholder="Username" formControlName="username" [pattern]="companyRegex">
+              <input type="text" matInput placeholder="Username" formControlName="username">
             </mat-form-field>
           </p>
 
@@ -28,7 +28,7 @@
 
           <p *ngIf="displayNewCompanyCreationInput">
             <mat-form-field>
-              <input type="text" matInput placeholder="Company name" formControlName="company" [pattern]="companyRegex">
+              <input type="text" matInput placeholder="Company name" formControlName="company">
             </mat-form-field>
           </p>
 
