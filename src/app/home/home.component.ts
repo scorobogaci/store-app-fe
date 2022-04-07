@@ -56,7 +56,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'type', 'uploadTime', 'size'];
+  displayedColumns: string[] = ['name', 'type', 'uploadTime', 'size','actions'];
   dataSource = ELEMENT_DATA;
 
   constructor(private router: Router) {
