@@ -6,6 +6,8 @@ import {Auth} from "aws-amplify";
 import {CognitoUserSession} from "amazon-cognito-identity-js";
 import {AuthService} from "../services/auth.service";
 import {ADD_USER_PAGE, ADMINISTRATORS_GROUP, FORGOT_PASSWORD_PAGE, HOME_PAGE, RESET_PASSWORD_PAGE} from "../constants";
+import {MatSnackBar, MatSnackBarRef, SimpleSnackBar} from "@angular/material/snack-bar";
+import {AppOverlayContainer} from "../services/app-overlay-container";
 
 @Component({
   selector: 'app-login',
@@ -13,21 +15,22 @@ import {ADD_USER_PAGE, ADMINISTRATORS_GROUP, FORGOT_PASSWORD_PAGE, HOME_PAGE, RE
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  public errorMessage: string
+  private snackbarRef: MatSnackBarRef<SimpleSnackBar> | undefined;
   form: FormGroup = new FormGroup({
     username: new FormControl(),
     password: new FormControl(),
   });
 
-  constructor(private router: Router, private authService: AuthService) {
-    this.errorMessage = ''
+  constructor(private router: Router,
+              private authService: AuthService,
+              private snackBar: MatSnackBar,
+              private appOverlayContainer: AppOverlayContainer) {
   }
 
   ngOnInit(): void {
   }
 
-  public signIn(): void {
-    this.errorMessage = '';
+  public signIn(container: HTMLElement): void {
     Auth.signIn(this.form.controls['username'].value, this.form.controls['password'].value).then((session: any) => {
       if (session) {
         switch (session.challengeName) {
@@ -46,9 +49,29 @@ export class LoginComponent implements OnInit {
         }
       }
     }, (error) => {
-      this.errorMessage = error
       console.log("Sign in error : ", error)
+      this.displaySnack(container, error, 'Got It')
     })
+
+  }
+
+  private displaySnack(overlayContainerWrapper: HTMLElement, message: string, action: string): void {
+    if (overlayContainerWrapper === null) {
+      return;
+    }
+
+    if (this.snackbarRef) {
+      this.snackbarRef.dismiss();
+    }
+
+    setTimeout(() => {
+      this.appOverlayContainer.appendToCustomWrapper(overlayContainerWrapper);
+
+      this.snackbarRef = this.snackBar.open(message, action, {
+        duration: 0
+      });
+
+    }, 100);
 
   }
 

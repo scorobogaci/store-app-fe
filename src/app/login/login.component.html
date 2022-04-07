@@ -1,30 +1,35 @@
-<mat-card>
-  <mat-card-title>Login</mat-card-title>
-  <mat-card-content>
-    <form [formGroup]="form">
-      <p>
-        <mat-form-field>
-          <input type="text" matInput placeholder="Email" formControlName="username">
-        </mat-form-field>
-      </p>
+<div class="container">
+  <div class="login-container" #loginContainer>
+    <mat-card>
+      <mat-card-title>Login</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="form">
+          <p>
+            <mat-form-field>
+              <input type="text" matInput placeholder="Email" formControlName="username">
+            </mat-form-field>
+          </p>
 
-      <p>
-        <mat-form-field>
-          <input type="password" matInput placeholder="Password" formControlName="password">
-        </mat-form-field>
-      </p>
+          <p>
+            <mat-form-field>
+              <input type="password" matInput placeholder="Password" formControlName="password">
+            </mat-form-field>
+          </p>
 
-      <p *ngIf="errorMessage" style="color: red">{{errorMessage}}</p>
+          <p>
+            <button style="width: 100%" (click)="signIn(loginContainer)" type="submit" mat-raised-button
+                    color="primary">Login
+            </button>
+          </p>
 
-      <p>
-        <button style="width: 100%" (click)="signIn()" type="submit" mat-raised-button color="primary">Login</button>
-      </p>
+          <div class="forgot-password">
+            <a style="color: gray;cursor: pointer" (click)="forgotPassword()">Forgot password ?</a>
+          </div>
 
-      <div class="forgot-password">
-        <a style="color: gray;cursor: pointer" (click)="forgotPassword()">Forgot password ?</a>
-      </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
 
-    </form>
-  </mat-card-content>
-</mat-card>
 
