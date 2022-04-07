@@ -1,6 +1,18 @@
-
-
+:host{
+  background-color: white;
+}
 table {
   width: 100%;
   padding: 40px;
+}
+
+.container {
+  margin: auto;
+  background-color: white;
+}
+
+.home-container {
+  padding: 40px;
+  background-color: white;
+  height: 100%;
 }
