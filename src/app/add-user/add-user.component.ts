@@ -5,6 +5,7 @@ import {ApiService} from "../services/api.service";
 import {AddUserRequest} from "../types";
 import {MatSnackBar, MatSnackBarRef, SimpleSnackBar} from "@angular/material/snack-bar";
 import {AppOverlayContainer} from "../services/app-overlay-container";
+import {EMPTY_STRING} from "../constants";
 
 @Component({
   selector: 'app-add-user',
@@ -15,16 +16,15 @@ export class AddUserComponent implements OnInit {
   private snackbarRef: MatSnackBarRef<SimpleSnackBar> | undefined;
   private gotItAction = 'Got it!'
   private closeAction = 'Close'
-  private emptyString = ''
   public companyRegex = new RegExp('^[a-zA-Z0-9_ .-]*$')
   public blockSubmitButton = false
   public displayNewCompanyCreationInput = false
 
   form: FormGroup = new FormGroup({
-    email: new FormControl(this.emptyString, [Validators.required]),
-    username: new FormControl(this.emptyString, [Validators.required]),
-    company: new FormControl(this.emptyString, [Validators.required]),
-    existingCompany: new FormControl(this.emptyString, [Validators.required]),
+    email: new FormControl(EMPTY_STRING, [Validators.required]),
+    username: new FormControl(EMPTY_STRING, [Validators.required]),
+    company: new FormControl(EMPTY_STRING, [Validators.required]),
+    existingCompany: new FormControl(EMPTY_STRING, [Validators.required]),
     isCompanyAdministrator: new FormControl(false),
   });
 
@@ -50,7 +50,7 @@ export class AddUserComponent implements OnInit {
 
   public addUser(container: HTMLElement): void {
 
-    if (this.emptyString !== this.form.controls['company'].value) {
+    if (EMPTY_STRING !== this.form.controls['company'].value) {
       this.form.controls['existingCompany'].clearValidators()
       this.form.controls['existingCompany'].updateValueAndValidity();
     }

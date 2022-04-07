@@ -6,7 +6,7 @@
         <form [formGroup]="form">
           <p>
             <mat-form-field>
-              <input type="text" matInput placeholder="Email" formControlName="username">
+              <input type="text" matInput placeholder="Email" formControlName="username" email>
             </mat-form-field>
           </p>
 
@@ -18,7 +18,7 @@
 
           <p>
             <button style="width: 100%" (click)="signIn(loginContainer)" type="submit" mat-raised-button
-                    color="primary">Login
+                    color="primary" [disabled]="disableSubmitButton">Login
             </button>
           </p>
 
