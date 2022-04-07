@@ -17,6 +17,7 @@ export class AddUserComponent implements OnInit {
   private gotItAction = 'Got it!'
   private closeAction = 'Close'
   public companyRegex = new RegExp('^[a-zA-Z0-9_ .-]*$')
+  public noEmptySpacesRegex = new RegExp('/^(\\s+\\S+\\s*)*(?!\\s).*$/')
   public blockSubmitButton = false
   public displayNewCompanyCreationInput = false
 
