@@ -17,3 +17,23 @@ table {
   background-color: white;
   height: 100%;
 }
+
+.mat-column-name {
+  width: 20%;
+}
+
+.mat-column-type {
+  width: 20%;
+}
+
+.mat-column-uploadTime {
+  width: 20%;
+}
+
+.mat-column-size {
+  width: 20%;
+}
+
+.mat-column-actions {
+  width: 20%;
+}
