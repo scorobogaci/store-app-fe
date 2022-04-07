@@ -1,5 +1,6 @@
-:host {
-  display: flex;
-  justify-content: center;
-  margin: 100px 0px;
+
+
+table {
+  width: 100%;
+  padding: 40px;
 }

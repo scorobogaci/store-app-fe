@@ -24,6 +24,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatTableModule} from "@angular/material/table";
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
     MatIconModule,
     MatCheckboxModule,
     MatFormFieldModule,
+    MatTableModule,
   ],
   exports: [
     MatInputModule
