@@ -22,8 +22,8 @@ export class AddUserComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
     email: new FormControl(EMPTY_STRING, [Validators.required]),
+    companySelect: new FormControl(EMPTY_STRING, [Validators.required]),
     companyAlias: new FormControl(EMPTY_STRING, [Validators.required]),
-    existingCompany: new FormControl(EMPTY_STRING, [Validators.required]),
     isCompanyAdministrator: new FormControl(false),
     companyIdentifier: new FormControl(EMPTY_STRING, [Validators.required, Validators.pattern(this.companyIdentifierRegex)])
   });
@@ -43,35 +43,48 @@ export class AddUserComponent implements OnInit {
       },
       error => console.log('error : ', error))
 
-    this.form.get('existingCompany')!.valueChanges.subscribe(value => {
-      this.displayNewCompanyCreationInput = 'new_company' === value;
+    this.form.get('companySelect')!.valueChanges.subscribe(value => {
+      this.displayNewCompanyCreationInput = 'new' === value;
+      if (value !== 'new') {
+        this.form.controls['companyAlias'].clearValidators()
+        this.form.controls['companyAlias'].updateValueAndValidity();
+        this.form.controls['companyIdentifier'].clearValidators()
+        this.form.controls['companyIdentifier'].updateValueAndValidity();
+      } else {
+        this.form.controls['companyAlias'].setValidators(Validators.required)
+        this.form.controls['companyAlias'].updateValueAndValidity();
+        this.form.controls['companyIdentifier'].setValidators(Validators.required)
+        this.form.controls['companyIdentifier'].updateValueAndValidity();
+      }
     })
   }
 
   public addUser(container: HTMLElement): void {
 
-    if (EMPTY_STRING !== this.form.controls['company'].value) {
-      this.form.controls['existingCompany'].clearValidators()
-      this.form.controls['existingCompany'].updateValueAndValidity();
-    }
-
-    if (this.form.controls['existingCompany'].value !== 'new_company') {
-      this.form.controls['company'].clearValidators()
-      this.form.controls['company'].updateValueAndValidity();
-    }
-
     if (!this.form.valid) {
       return
     }
 
-    const addUserRequest: AddUserRequest = {
-      email: this.form.controls['email'].value,
-      companyAlias: this.form.controls['companyAlias'].value,
-      isNewCompany: true,
-      isCompanyAdministrator: this.form.controls['isCompanyAdministrator'].value,
-      companyIdentifier: this.form.controls['companyIdentifier'].value
+    let addUserRequest: AddUserRequest;
+    if (this.form.controls['companySelect'].value !== 'new') {
+      addUserRequest = {
+        email: this.form.controls['email'].value,
+        companyAlias: this.form.controls['companyAlias'].value,
+        isNewCompany: this.form.controls['companySelect'].value === 'new',
+        isCompanyAdministrator: this.form.controls['isCompanyAdministrator'].value,
+        companyIdentifier: this.form.controls['companySelect'].value
+      }
+    } else {
+      addUserRequest = {
+        email: this.form.controls['email'].value,
+        companyAlias: this.form.controls['companyAlias'].value,
+        isNewCompany: this.form.controls['companySelect'].value === 'new',
+        isCompanyAdministrator: this.form.controls['isCompanyAdministrator'].value,
+        companyIdentifier: this.form.controls['companyIdentifier'].value
+      }
     }
 
+    console.log("addUserRequest : ", addUserRequest)
     this.blockSubmitButton = true
     this.apiService.addUser(addUserRequest).subscribe(
       () => {
