@@ -25,6 +25,36 @@ export class AuthService {
     );
   }
 
+  public isCompanyAdministrator(): Observable<boolean> {
+    return fromPromise(Auth.currentSession()).pipe(
+      map((session: CognitoUserSession) => {
+        if (session.isValid()) {
+          return '1' === session.getIdToken().payload['custom:is_admin'];
+        } else {
+          return false
+        }
+      }),
+      catchError((error) => {
+        return throwError(error);
+      })
+    );
+  }
+
+  public getUsername(): Observable<string> {
+    return fromPromise(Auth.currentSession()).pipe(
+      map((session: CognitoUserSession) => {
+        if (session.isValid()) {
+          return session.getIdToken().payload['nickname']
+        } else {
+          console.log('Invalid session. unable to get username')
+        }
+      }),
+      catchError((error) => {
+        return throwError(error);
+      })
+    );
+  }
+
   public getUserGroups(): Observable<string[]> {
     return fromPromise(Auth.currentSession()).pipe(
       map((session: CognitoUserSession) => {
