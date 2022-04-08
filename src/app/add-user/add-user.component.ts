@@ -53,7 +53,7 @@ export class AddUserComponent implements OnInit {
       } else {
         this.form.controls['companyAlias'].setValidators(Validators.required)
         this.form.controls['companyAlias'].updateValueAndValidity();
-        this.form.controls['companyIdentifier'].setValidators(Validators.required)
+        this.form.controls['companyIdentifier'].setValidators([Validators.required, Validators.pattern(this.companyIdentifierRegex)])
         this.form.controls['companyIdentifier'].updateValueAndValidity();
       }
     })
