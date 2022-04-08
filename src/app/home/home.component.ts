@@ -2,53 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {Auth} from "aws-amplify";
 import {noop} from "rxjs";
-
-export interface PeriodicElement {
-  name: string;
-  type: string;
-  uploadTime: string
-  size: string
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-  {name: 'ice-cube-documentary', type: '.mov', uploadTime: '2021-14-11 13:00:00', size: '11 GB'},
-
-];
+import {ApiService} from "../services/api.service";
+import {File} from "../types";
 
 @Component({
   selector: 'app-home',
@@ -56,13 +11,18 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'type', 'uploadTime', 'size','actions'];
-  dataSource = ELEMENT_DATA;
+  displayedColumns: string[] = ['name', 'type', 'uploadTime', 'size', 'actions'];
+  dataSource: File[] = [];
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private apiService: ApiService) {
   }
 
   ngOnInit(): void {
+    this.apiService.getCompanyFiles().subscribe(response => {
+      this.dataSource = response.companyFiles
+    }, error => {
+      console.log("Error on getting company files", error)
+    })
   }
 
   public logout(): void {

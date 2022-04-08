@@ -6,13 +6,25 @@ export interface CompaniesResponse {
 
 export interface AddUserRequest {
   email: string;
-  username: string
-  company: string
-  isNewCompany: boolean
-  isCompanyAdministrator: boolean
+  username: string;
+  company: string;
+  isNewCompany: boolean;
+  isCompanyAdministrator: boolean;
 }
 
 export interface AddUserResponse {
-  success: boolean
-  errorMessage: string
+  success: boolean;
+  errorMessage: string;
+}
+
+export interface GetCompanyFilesResponse {
+  companyFiles: File[]
+}
+
+export interface File {
+  key: string;
+  name: string;
+  type: string;
+  size: number;
+  uploadTime: string;
 }
