@@ -44,4 +44,11 @@ export class ApiService {
     return this.http.post<DeleteFileResponse>(CONFIG.baseApiUrl.concat(deleteFileUri), deleteFileRequest)
   }
 
+  public downloadFile(key: string): Observable<string> {
+    const downloadFileResourceUri = '/download-file'
+    return this.http.get<string>(CONFIG.baseApiUrl.concat(downloadFileResourceUri), {
+      params: new HttpParams().set('key', key)
+    })
+  }
+
 }

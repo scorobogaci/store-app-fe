@@ -10,27 +10,32 @@
             </mat-form-field>
           </p>
 
-          <p>
-            <mat-form-field>
-              <input type="text" matInput placeholder="Username" formControlName="username">
-            </mat-form-field>
-          </p>
-
           <mat-form-field>
             <mat-label>Company</mat-label>
             <mat-select formControlName="existingCompany">
               <mat-option [value]="'new_company'">Onboard new</mat-option>
-              <mat-option *ngFor="let company of companies" [value]="company">
-                {{company}}
+              <mat-option *ngFor="let company of companies" [value]="company.name">
+                {{company.alias}}
               </mat-option>
             </mat-select>
           </mat-form-field>
 
-          <p *ngIf="displayNewCompanyCreationInput">
-            <mat-form-field>
-              <input type="text" matInput placeholder="Company name" formControlName="company">
-            </mat-form-field>
-          </p>
+          <div *ngIf="displayNewCompanyCreationInput">
+
+            <p>
+              <mat-form-field>
+                <input type="text" matInput placeholder="Company Identifier" formControlName="companyIdentifier">
+              </mat-form-field>
+            </p>
+
+            <p>
+              <mat-form-field>
+                <input type="text" matInput placeholder="Company name/Company Alias" formControlName="companyAlias"
+                       maxlength="30">
+              </mat-form-field>
+            </p>
+
+          </div>
 
           <p>
             <mat-checkbox formControlName="isCompanyAdministrator">Mark as company

@@ -1,15 +1,20 @@
 export type Nullable<T> = T | null;
 
 export interface CompaniesResponse {
-  companies: string[]
+  companies: Company[]
+}
+
+export interface Company {
+  name: string;
+  alias: string;
 }
 
 export interface AddUserRequest {
   email: string;
-  username: string;
-  company: string;
+  companyAlias: string;
   isNewCompany: boolean;
   isCompanyAdministrator: boolean;
+  companyIdentifier: string
 }
 
 export interface AddUserResponse {

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../services/auth.service";
 import {ApiService} from "../services/api.service";
-import {AddUserRequest} from "../types";
+import {AddUserRequest, Company} from "../types";
 import {MatSnackBar, MatSnackBarRef, SimpleSnackBar} from "@angular/material/snack-bar";
 import {AppOverlayContainer} from "../services/app-overlay-container";
 import {EMPTY_STRING} from "../constants";
@@ -16,21 +16,19 @@ export class AddUserComponent implements OnInit {
   private snackbarRef: MatSnackBarRef<SimpleSnackBar> | undefined;
   private gotItAction = 'Got it!'
   private closeAction = 'Close'
-  public companyRegex = new RegExp('^[a-zA-Z0-9_ .-]*$')
-  public usernameRegex = new RegExp('^[a-zA-Z0-9_.-]*$')
-  public doNotAllowOnlyWhiteSpacesRegex = new RegExp('^(\\s+\\S+\\s*)*(?!\\s).*$')
+  private companyIdentifierRegex = new RegExp('^((?!xn--)(?!.*-s3alias)[a-z0-9][a-z0-9-]{1,61}[a-z0-9])$')
   public blockSubmitButton = false
   public displayNewCompanyCreationInput = false
 
   form: FormGroup = new FormGroup({
     email: new FormControl(EMPTY_STRING, [Validators.required]),
-    username: new FormControl(EMPTY_STRING, [Validators.required, Validators.pattern(this.doNotAllowOnlyWhiteSpacesRegex), Validators.pattern(this.usernameRegex)]),
-    company: new FormControl(EMPTY_STRING, [Validators.required, Validators.pattern(this.doNotAllowOnlyWhiteSpacesRegex), Validators.pattern(this.companyRegex)]),
+    companyAlias: new FormControl(EMPTY_STRING, [Validators.required]),
     existingCompany: new FormControl(EMPTY_STRING, [Validators.required]),
     isCompanyAdministrator: new FormControl(false),
+    companyIdentifier: new FormControl(EMPTY_STRING, [Validators.required, Validators.pattern(this.companyIdentifierRegex)])
   });
 
-  companies: string[] = []
+  companies: Company[] = []
 
   constructor(private authService: AuthService,
               private apiService: ApiService,
@@ -68,18 +66,10 @@ export class AddUserComponent implements OnInit {
 
     const addUserRequest: AddUserRequest = {
       email: this.form.controls['email'].value,
-      username: this.form.controls['username'].value,
-      company: this.form.controls['company'].value,
+      companyAlias: this.form.controls['companyAlias'].value,
       isNewCompany: true,
-      isCompanyAdministrator: this.form.controls['isCompanyAdministrator'].value
-    }
-
-    if (this.form.controls['existingCompany'].value === 'new_company') {
-      addUserRequest.isNewCompany = true
-      addUserRequest.company = this.form.controls['company'].value
-    } else {
-      addUserRequest.isNewCompany = false
-      addUserRequest.company = this.form.controls['existingCompany'].value
+      isCompanyAdministrator: this.form.controls['isCompanyAdministrator'].value,
+      companyIdentifier: this.form.controls['companyIdentifier'].value
     }
 
     this.blockSubmitButton = true

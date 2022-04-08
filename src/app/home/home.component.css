@@ -37,3 +37,9 @@ table {
 .mat-column-actions {
   width: 20%;
 }
+
+.table-container {
+  margin-top: 10px;
+  max-height: 20%;
+  overflow: auto;
+}
