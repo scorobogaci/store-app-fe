@@ -17,6 +17,15 @@ export interface AddUserResponse {
   errorMessage: string;
 }
 
+export interface DeleteFileRequest {
+  key: string
+}
+
+export interface DeleteFileResponse {
+  success: boolean;
+  errorMessage: string;
+}
+
 export interface GetCompanyFilesResponse {
   companyFiles: File[]
 }

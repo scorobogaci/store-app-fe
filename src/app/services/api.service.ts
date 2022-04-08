@@ -3,7 +3,13 @@ import {AuthService} from "./auth.service";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {CONFIG} from "../config/config";
 import {Observable} from "rxjs";
-import {AddUserRequest, AddUserResponse, CompaniesResponse, GetCompanyFilesResponse} from "../types";
+import {
+  AddUserRequest,
+  AddUserResponse,
+  CompaniesResponse, DeleteFileRequest,
+  DeleteFileResponse,
+  GetCompanyFilesResponse
+} from "../types";
 import {flatMap} from "rxjs/internal/operators";
 
 @Injectable({
@@ -31,6 +37,11 @@ export class ApiService {
         params: new HttpParams().set('company', groups[0])
       })
     }))
+  }
+
+  public deleteFile(deleteFileRequest: DeleteFileRequest): Observable<DeleteFileResponse> {
+    const deleteFileUri = '/delete-file'
+    return this.http.post<DeleteFileResponse>(CONFIG.baseApiUrl.concat(deleteFileUri), deleteFileRequest)
   }
 
 }

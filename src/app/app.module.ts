@@ -25,6 +25,8 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatTableModule} from "@angular/material/table";
+import {DialogComponent} from "./components/dialog-component/dialog.component";
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import {MatTableModule} from "@angular/material/table";
     ResetPasswordComponent,
     HomeComponent,
     ForgotPasswordComponent,
-    AddUserComponent
+    AddUserComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -51,6 +54,7 @@ import {MatTableModule} from "@angular/material/table";
     MatCheckboxModule,
     MatFormFieldModule,
     MatTableModule,
+    MatDialogModule,
   ],
   exports: [
     MatInputModule
