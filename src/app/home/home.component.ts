@@ -9,6 +9,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {ConfirmDialogModel, DialogComponent} from "../components/dialog-component/dialog.component";
 import {take} from "rxjs/operators";
 import {LOGIN_PAGE} from "../constants";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-home',
@@ -27,11 +28,12 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router,
               private apiService: ApiService,
               private authService: AuthService,
+              private spinner: NgxSpinnerService,
               private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
-
+    this.spinner.show().then(noop)
     this.authService.isCompanyAdministrator().subscribe(isCompanyAdministrator => {
       this.isCompanyAdministrator = isCompanyAdministrator
     }, error => {
@@ -46,6 +48,7 @@ export class HomeComponent implements OnInit {
 
     this.apiService.getCompanyFiles().subscribe(response => {
       this.dataSource = response.companyFiles
+      this.spinner.hide().then(noop)
     }, error => {
       console.log("Error on getting company files", error)
     })
@@ -76,8 +79,10 @@ export class HomeComponent implements OnInit {
   }
 
   public downloadFile(key: string): void {
+    this.spinner.show().then(noop)
     this.apiService.downloadFile(key).pipe(take(1)).subscribe(url => {
-      window.open(url,'_top')
+      window.open(url, '_top')
+      this.spinner.hide().then(noop)
     }, error => {
       console.log("Error on downloading the file : ", error)
     })
