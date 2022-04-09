@@ -12,10 +12,10 @@ export class AuthGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.authService.isCompanyAdministrator()) {
-      this.router.navigate([ADD_USER_PAGE]).then(noop)
-      return false
-    }
+    // if (this.authService.isCompanyAdministrator()) {
+    //   this.router.navigate([ADD_USER_PAGE]).then(noop)
+    //   return false
+    // }
     return this.authService.isAuthenticated()
   }
 }
