@@ -38,3 +38,10 @@ table {
   width: 100%;
   overflow: auto;
 }
+
+.mat-header-cell, mat-header-row, .mat-header-cell-def{
+  font-weight:bold;
+  font-size:14px;
+  color: #1a084c;
+  margin-bottom:5px;
+}
