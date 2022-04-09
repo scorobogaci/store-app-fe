@@ -47,13 +47,15 @@ export class LoginComponent implements OnInit {
               this.router.navigate([RESET_PASSWORD_PAGE]).then(noop)
               break
             default:
-              this.authService.getUserGroups().subscribe(userGroups => {
-                if (userGroups.length > 0 && userGroups.includes(ADMINISTRATORS_GROUP)) {
-                  this.router.navigate([ADD_USER_PAGE]).then(noop)
-                } else {
-                  this.router.navigate([HOME_PAGE]).then(noop)
-                }
-              })
+              // this.authService.getUserGroups().subscribe(userGroups => {
+              //   console.log("user groups :, here it fails : ",userGroups)
+              //   if (userGroups.length > 0 && userGroups.includes(ADMINISTRATORS_GROUP)) {
+              //     this.router.navigate([ADD_USER_PAGE]).then(noop)
+              //   } else {
+              //     this.router.navigate([HOME_PAGE]).then(noop)
+              //   }
+              // })
+              this.router.navigate([HOME_PAGE]).then(noop)
           }
         }
       }, (error) => {
