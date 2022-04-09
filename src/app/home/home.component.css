@@ -5,17 +5,12 @@
 table {
   width: 100%;
   padding: 40px;
+  max-height: 500px;
 }
 
-.container {
-  margin: auto;
-  background-color: white;
-}
-
-.home-container {
+.content-container {
   padding: 40px;
-  background-color: white;
-  height: 100%;
+  background-color: #d9d9d9;
 }
 
 .mat-column-name {
@@ -39,7 +34,7 @@ table {
 }
 
 .table-container {
-  margin-top: 10px;
-  max-height: 20%;
+  max-height: 85vh;
+  width: 100%;
   overflow: auto;
 }
