@@ -36,8 +36,9 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Actions</th>
         <td mat-cell *matCellDef="let element">
-          <p style="color: green;cursor: pointer" (click)="downloadFile(element.key,element.name)">Download</p>
-          <p style="color: deeppink;cursor: pointer" *ngIf="isCompanyAdministrator" (click)="deleteFile(element.key)">Delete</p>
+          <p style="color: green;cursor: pointer" (click)="downloadFile(element.key)">Download</p>
+          <p style="color: deeppink;cursor: pointer" *ngIf="isCompanyAdministrator" (click)="deleteFile(element.key)">
+            Delete</p>
         </td>
 
 
