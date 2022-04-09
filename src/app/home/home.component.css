@@ -14,23 +14,23 @@ table {
 }
 
 .mat-column-name {
-  width: 20%;
+  width: 30%;
 }
 
 .mat-column-type {
-  width: 20%;
+  width: 10%;
 }
 
 .mat-column-uploadTime {
-  width: 20%;
+  width: 30%;
 }
 
 .mat-column-size {
-  width: 20%;
+  width: 15%;
 }
 
 .mat-column-actions {
-  width: 20%;
+  width: 15%;
 }
 
 .table-container {
