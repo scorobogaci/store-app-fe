@@ -6,7 +6,7 @@ import {catchError, map} from 'rxjs/operators';
 import {Auth} from "aws-amplify";
 import {Router} from "@angular/router";
 import {Nullable} from "../types";
-import {LOGIN_PAGE} from "../constants";
+import {ADMINISTRATORS_GROUP, LOGIN_PAGE} from "../constants";
 
 @Injectable({
   providedIn: 'root'
@@ -81,6 +81,21 @@ export class AuthService {
           return session.getIdToken().getJwtToken();
         } else {
           return null;
+        }
+      }),
+      catchError((error) => {
+        return throwError(error);
+      })
+    );
+  }
+
+  public isApplicationAdministrator(): Observable<boolean> {
+    return fromPromise(Auth.currentSession()).pipe(
+      map((session: CognitoUserSession) => {
+        if (session.isValid()) {
+          return ADMINISTRATORS_GROUP === session.getIdToken().payload['cognito:groups']
+        } else {
+          return false
         }
       }),
       catchError((error) => {
