@@ -14,7 +14,8 @@ export interface AddUserRequest {
   companyAlias: string;
   isNewCompany: boolean;
   isCompanyAdministrator: boolean;
-  companyIdentifier: string
+  companyIdentifier: string;
+  username: string;
 }
 
 export interface AddUserResponse {

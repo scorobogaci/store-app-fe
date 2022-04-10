@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
   public displayedColumns: string[] = ['name', 'type', 'uploadTime', 'size', 'actions'];
   public dataSource: File[] = [];
   public username: string = ''
+  public displayWelcomeUsername = ''
   public isCompanyAdministrator = false
 
   private dialogTitle = "You're about to delete a file from company's storage"
@@ -42,6 +43,10 @@ export class HomeComponent implements OnInit {
 
     this.authService.getUsername().subscribe(username => {
       this.username = username
+      if (this.username !== 'not_set') {
+        this.displayWelcomeUsername = this.username
+      }
+
     }, error => {
       console.log('Error while getting username : ', error)
     })

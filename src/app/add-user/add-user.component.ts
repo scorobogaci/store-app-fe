@@ -20,8 +20,11 @@ export class AddUserComponent implements OnInit {
   public blockSubmitButton = false
   public displayNewCompanyCreationInput = false
 
+  // https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
+
   form: FormGroup = new FormGroup({
     email: new FormControl(EMPTY_STRING, [Validators.required]),
+    username: new FormControl(EMPTY_STRING,),
     companySelect: new FormControl(EMPTY_STRING, [Validators.required]),
     companyAlias: new FormControl(EMPTY_STRING, [Validators.required]),
     isCompanyAdministrator: new FormControl(false),
@@ -72,7 +75,8 @@ export class AddUserComponent implements OnInit {
         companyAlias: this.form.controls['companyAlias'].value,
         isNewCompany: this.form.controls['companySelect'].value === 'new',
         isCompanyAdministrator: this.form.controls['isCompanyAdministrator'].value,
-        companyIdentifier: this.form.controls['companySelect'].value
+        companyIdentifier: this.form.controls['companySelect'].value,
+        username: this.form.controls['username'].value
       }
     } else {
       addUserRequest = {
@@ -80,7 +84,8 @@ export class AddUserComponent implements OnInit {
         companyAlias: this.form.controls['companyAlias'].value,
         isNewCompany: this.form.controls['companySelect'].value === 'new',
         isCompanyAdministrator: this.form.controls['isCompanyAdministrator'].value,
-        companyIdentifier: this.form.controls['companyIdentifier'].value
+        companyIdentifier: this.form.controls['companyIdentifier'].value,
+        username: this.form.controls['username'].value
       }
     }
 

@@ -26,6 +26,7 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   public resetPassword(container: HTMLElement): void {
+    console.log("this reset password invoked")
 
     if (this.form.valid) {
       if (this.form.controls['newPassword'].value !== this.form.controls['confirmNewPassword'].value) {

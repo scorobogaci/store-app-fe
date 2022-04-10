@@ -1,7 +1,7 @@
 <div class="content-container">
-  <div style="background-color: white">
+  <div>
+    <h3> Welcome<span *ngIf="displayWelcomeUsername">, </span>{{displayWelcomeUsername}}</h3>
     <div style="float: right;padding-bottom: 20px">
-
       <button mat-raised-button color="primary" style="margin-right: 20px">
         <mat-icon aria-hidden="false" aria-label="Example home icon">upload</mat-icon>
         Upload file

@@ -28,6 +28,7 @@ import {MatTableModule} from "@angular/material/table";
 import {DialogComponent} from "./components/dialog-component/dialog.component";
 import {MatDialogModule} from "@angular/material/dialog";
 import {NgxSpinnerModule} from "ngx-spinner";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -39,25 +40,26 @@ import {NgxSpinnerModule} from "ngx-spinner";
     AddUserComponent,
     DialogComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
-        MatCardModule,
-        MatInputModule,
-        MatButtonModule,
-        HttpClientModule,
-        MatSelectModule,
-        MatSnackBarModule,
-        MatMenuModule,
-        MatIconModule,
-        MatCheckboxModule,
-        MatFormFieldModule,
-        MatTableModule,
-        MatDialogModule,
-        NgxSpinnerModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatInputModule,
+    MatButtonModule,
+    HttpClientModule,
+    MatSelectModule,
+    MatSnackBarModule,
+    MatMenuModule,
+    MatIconModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatTableModule,
+    MatDialogModule,
+    NgxSpinnerModule,
+    MatTooltipModule,
+  ],
   exports: [
     MatInputModule
   ],
