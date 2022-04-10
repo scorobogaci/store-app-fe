@@ -93,6 +93,21 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  public onFileSelected(): void {
+    const inputNode: any = document.querySelector('#file');
+
+    if (typeof (FileReader) !== 'undefined') {
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        console.log("e.target.result : ", e.target.result)
+        //this.srcResult = e.target.result;
+      };
+
+      reader.readAsArrayBuffer(inputNode.files[0]);
+    }
+  }
+
   public logout(): void {
     Auth.signOut().then(
       () => this.router.navigate([LOGIN_PAGE]).then(noop),

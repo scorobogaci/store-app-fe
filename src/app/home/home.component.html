@@ -1,10 +1,11 @@
 <div class="content-container">
   <div>
     <h3> Welcome<span *ngIf="displayWelcomeUsername">, </span>{{displayWelcomeUsername}}</h3>
-    <button mat-raised-button color="primary" style="margin-right: 20px">
+    <button mat-raised-button color="primary" style="margin-right: 20px" (click)="fileInput.click()">
       <mat-icon aria-hidden="false" aria-label="Example home icon">upload</mat-icon>
       Upload file
     </button>
+    <input hidden (change)="onFileSelected()" #fileInput type="file" id="file">
     <div style="float: right;padding-bottom: 20px">
       <button mat-raised-button color="accent" (click)="logout()">
         <mat-icon aria-hidden="false" aria-label="Example home icon">logout</mat-icon>
