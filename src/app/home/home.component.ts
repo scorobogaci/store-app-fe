@@ -78,7 +78,6 @@ export class HomeComponent implements OnInit {
       if (result === true) {
         const deleteFileRequest: DeleteFileRequest = {key: key}
         this.apiService.deleteFile(deleteFileRequest).pipe(take(1)).subscribe(response => {
-          console.log("response : ", response)
           this.dataSource = this.dataSource.filter(element => element.key !== key)
         }, error => {
           console.log("Delete file error : ", error)
@@ -145,7 +144,7 @@ export class HomeComponent implements OnInit {
             return true;
           });
         })
-        return new Promise((resolve, reject) => {
+        return new Promise(() => {
         })
       })).pipe(take(1)).subscribe()
 

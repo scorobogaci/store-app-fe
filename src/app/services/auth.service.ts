@@ -85,22 +85,6 @@ export class AuthService {
     );
   }
 
-
-  // public getUserGroups(): Observable<string[]> {
-  //   return fromPromise(Auth.currentSession()).pipe(
-  //     map((session: CognitoUserSession) => {
-  //       if (session.isValid()) {
-  //         return session.getIdToken().payload['cognito:groups']
-  //       } else {
-  //         return [];
-  //       }
-  //     }),
-  //     catchError((error) => {
-  //       return throwError(error);
-  //     })
-  //   );
-  // }
-
   public isAuthenticated(): Observable<boolean> {
     return this.login().pipe(map(() => true));
   }
