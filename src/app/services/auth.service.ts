@@ -44,7 +44,7 @@ export class AuthService {
     return fromPromise(Auth.currentSession()).pipe(
       map((session: CognitoUserSession) => {
         if (session.isValid()) {
-          return session.getIdToken().payload['nickname']
+          return session.getIdToken().payload['cognito:username']
         } else {
           console.log('Invalid session. unable to get username')
         }
@@ -55,13 +55,13 @@ export class AuthService {
     );
   }
 
-  public getUserGroups(): Observable<string[]> {
+  public getNickName(): Observable<string> {
     return fromPromise(Auth.currentSession()).pipe(
       map((session: CognitoUserSession) => {
         if (session.isValid()) {
-          return session.getIdToken().payload['cognito:groups']
+          return session.getIdToken().payload['nickname']
         } else {
-          return [];
+          console.log('Invalid session. unable to get nickname')
         }
       }),
       catchError((error) => {
@@ -69,6 +69,37 @@ export class AuthService {
       })
     );
   }
+
+  public getUserGroup(): Observable<string> {
+    return fromPromise(Auth.currentSession()).pipe(
+      map((session: CognitoUserSession) => {
+        if (session.isValid()) {
+          return session.getIdToken().payload['cognito:groups'][0]
+        } else {
+          return ''
+        }
+      }),
+      catchError((error) => {
+        return throwError(error);
+      })
+    );
+  }
+
+
+  // public getUserGroups(): Observable<string[]> {
+  //   return fromPromise(Auth.currentSession()).pipe(
+  //     map((session: CognitoUserSession) => {
+  //       if (session.isValid()) {
+  //         return session.getIdToken().payload['cognito:groups']
+  //       } else {
+  //         return [];
+  //       }
+  //     }),
+  //     catchError((error) => {
+  //       return throwError(error);
+  //     })
+  //   );
+  // }
 
   public isAuthenticated(): Observable<boolean> {
     return this.login().pipe(map(() => true));

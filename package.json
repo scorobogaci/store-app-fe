@@ -19,10 +19,13 @@
     "@angular/platform-browser": "~13.3.0",
     "@angular/platform-browser-dynamic": "~13.3.0",
     "@angular/router": "~13.3.0",
+    "@aws-sdk/types": "^3.55.0",
     "aws-amplify": "^4.3.17",
+    "aws-sdk": "^2.1112.0",
     "ngx-spinner": "^13.1.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
+    "util": "^0.12.4",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

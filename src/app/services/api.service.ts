@@ -32,9 +32,9 @@ export class ApiService {
 
   public getCompanyFiles(): Observable<GetCompanyFilesResponse> {
     const getFilesResourceUri = '/get-files'
-    return this.authService.getUserGroups().pipe(flatMap(groups => {
+    return this.authService.getUserGroup().pipe(flatMap(userGroup => {
       return this.http.get<GetCompanyFilesResponse>(CONFIG.baseApiUrl.concat(getFilesResourceUri), {
-        params: new HttpParams().set('company', groups[0])
+        params: new HttpParams().set('company', userGroup)
       })
     }))
   }

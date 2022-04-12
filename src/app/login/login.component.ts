@@ -48,8 +48,8 @@ export class LoginComponent implements OnInit {
               this.router.navigate([RESET_PASSWORD_PAGE]).then(noop)
               break
             default:
-              this.authService.getUserGroups().subscribe(userGroups => {
-                if (userGroups.includes(ADMINISTRATORS_GROUP)) {
+              this.authService.getUserGroup().subscribe(userGroup => {
+                if (ADMINISTRATORS_GROUP === userGroup) {
                   this.router.navigate([ADD_USER_PAGE]).then(noop)
                 } else {
                   this.router.navigate([HOME_PAGE]).then(noop)

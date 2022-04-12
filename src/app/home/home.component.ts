@@ -10,6 +10,8 @@ import {ConfirmDialogModel, DialogComponent} from "../components/dialog-componen
 import {take} from "rxjs/operators";
 import {LOGIN_PAGE} from "../constants";
 import {NgxSpinnerService} from "ngx-spinner";
+import {S3} from "aws-sdk";
+import {flatMap} from "rxjs/internal/operators";
 
 @Component({
   selector: 'app-home',
@@ -35,10 +37,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    Auth.currentCredentials().then((credentials) => {
-      console.log("got temporary aws credentials : ", credentials)
-    })
-
     this.spinner.show().then(noop)
     this.authService.isCompanyAdministrator().subscribe(isCompanyAdministrator => {
       this.isCompanyAdministrator = isCompanyAdministrator
@@ -46,7 +44,7 @@ export class HomeComponent implements OnInit {
       console.log('Error while checking if user is company administrator : ', error)
     })
 
-    this.authService.getUsername().subscribe(username => {
+    this.authService.getNickName().subscribe(username => {
       this.username = username
       if (this.username !== 'not_set') {
         this.displayWelcomeUsername = this.username
@@ -62,6 +60,7 @@ export class HomeComponent implements OnInit {
     }, error => {
       console.log("Error on getting company files", error)
     })
+
   }
 
   public deleteFile(key: string): void {
@@ -100,16 +99,13 @@ export class HomeComponent implements OnInit {
 
   public onFileSelected(): void {
     const inputNode: any = document.querySelector('#file');
-
     if (typeof (FileReader) !== 'undefined') {
       const reader = new FileReader();
-
-      reader.onload = (e: any) => {
-        console.log("e.target.result : ", e.target.result)
-        //this.srcResult = e.target.result;
-      };
-
       reader.readAsArrayBuffer(inputNode.files[0]);
+      const fileName = inputNode.files[0].name
+      reader.onload = (e: any) => {
+        this.uploadFile(e.target.result, fileName).then(noop)
+      };
     }
   }
 
@@ -118,6 +114,44 @@ export class HomeComponent implements OnInit {
       () => this.router.navigate([LOGIN_PAGE]).then(noop),
       (error) => console.log('Error to sign out the user : ', error)
     );
+  }
+
+  public async uploadFile(file: any, filename: string): Promise<void> {
+    Auth.currentCredentials().then((credentials) => {
+      this.authService.getUserGroup().pipe(take(1), flatMap(userGroup => {
+        this.authService.getUsername().pipe(take(1)).subscribe(username => {
+          const s3Client = new S3({
+            accessKeyId: credentials.accessKeyId,
+            secretAccessKey: credentials.secretAccessKey,
+            sessionToken: credentials.sessionToken
+          })
+          const params = {
+            Bucket: userGroup,
+            Key: username.concat('/').concat(filename),
+            ACL: 'public-read',
+            ContentType: 'application/octet-stream',
+            ContentDisposition: 'attachment',
+            Body: file
+          }
+
+          s3Client.upload(params).on('httpUploadProgress', (event) => {
+            console.log(event.loaded + ' of ' + event.total + ' Bytes');
+          }).send((err: any, data: any) => {
+            if (err) {
+              console.log('There was an error uploading your file: ', err);
+              return false;
+            }
+            console.log('Successfully uploaded file.', data);
+            return true;
+          });
+        })
+        return new Promise((resolve, reject) => {
+        })
+      })).pipe(take(1)).subscribe()
+
+    }, error => {
+      console.log("Error while getting AWS Temporary credentials : ", error)
+    })
   }
 
 }

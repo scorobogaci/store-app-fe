@@ -14,8 +14,8 @@ export class AdminGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.authService.getUserGroups().pipe(map(userGroups => {
-      if (userGroups.length > 0 && userGroups.includes(ADMINISTRATORS_GROUP)) {
+    return this.authService.getUserGroup().pipe(map(userGroup => {
+      if (ADMINISTRATORS_GROUP === userGroup) {
         return true
       } else {
         this.router.navigate([HOME_PAGE]).then(noop)
