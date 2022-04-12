@@ -34,6 +34,11 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    Auth.currentCredentials().then((credentials) => {
+      console.log("got temporary aws credentials : ", credentials)
+    })
+
     this.spinner.show().then(noop)
     this.authService.isCompanyAdministrator().subscribe(isCompanyAdministrator => {
       this.isCompanyAdministrator = isCompanyAdministrator
