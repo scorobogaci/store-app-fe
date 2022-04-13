@@ -1,20 +1,11 @@
 import {Component, Inject, Optional} from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
-interface ConfirmDialogOptions {
-  okButtonText: string;
-  cancelButtonText: string;
-}
-
 export class ConfirmDialogModel {
   title: string;
   message: string;
 
-  constructor(
-    title: string,
-    message: string,
-    @Optional() public options?: Partial<ConfirmDialogOptions>
-  ) {
+  constructor(title: string, message: string) {
     this.title = title;
     this.message = message;
   }

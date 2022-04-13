@@ -27,7 +27,6 @@ export class HomeComponent implements OnInit {
   public isCompanyAdministrator = false
 
   private dialogTitle = "You're about to delete a file from company's storage"
-  private dialogMessage = "Are you sure you want to perform this action ?"
   private uploadDialogRef: MatDialogRef<UploadDialogComponent> | undefined
 
   constructor(private router: Router,
@@ -65,12 +64,10 @@ export class HomeComponent implements OnInit {
 
   }
 
-  public deleteFile(key: string): void {
+  public deleteFile(key: string, fileName: string): void {
 
-    const dialogData = new ConfirmDialogModel(this.dialogTitle, this.dialogMessage, {
-      okButtonText: 'Yes',
-      cancelButtonText: 'No'
-    });
+    const dialogMessage = "Delete ".concat(fileName).concat(' ?')
+    const dialogData = new ConfirmDialogModel(this.dialogTitle, dialogMessage);
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: dialogData
