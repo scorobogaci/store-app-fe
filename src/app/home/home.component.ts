@@ -75,10 +75,13 @@ export class HomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
+        this.spinner.show().then(noop)
         const deleteFileRequest: DeleteFileRequest = {key: key}
-        this.apiService.deleteFile(deleteFileRequest).pipe(take(1)).subscribe(response => {
+        this.apiService.deleteFile(deleteFileRequest).pipe(take(1)).subscribe(() => {
           this.dataSource = this.dataSource.filter(element => element.key !== key)
+          this.spinner.hide().then(noop)
         }, error => {
+          this.spinner.hide().then(noop)
           console.log("Delete file error : ", error)
         })
       }
