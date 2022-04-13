@@ -29,6 +29,7 @@ export class HomeComponent implements OnInit {
   private dialogTitle = "You're about to delete a file from company's storage"
   private uploadDialogRef: MatDialogRef<UploadDialogComponent> | undefined
   private username = ''
+  private uploadFileSize = 0
 
   constructor(private router: Router,
               private apiService: ApiService,
@@ -109,6 +110,7 @@ export class HomeComponent implements OnInit {
       const reader = new FileReader();
       reader.readAsArrayBuffer(inputNode.files[0]);
       const fileName = inputNode.files[0].name
+      this.uploadFileSize = inputNode.files[0].size
       reader.onload = (e: any) => {
         this.uploadDialogRef = this.dialog.open(UploadDialogComponent, {
           data: {
@@ -165,9 +167,21 @@ export class HomeComponent implements OnInit {
             if (err) {
               console.log('There was an error uploading your file: ', err);
               return false;
+            } else {
+              console.log('Successfully uploaded file.', data);
+              const uploadedFile: File = {
+                key: data.Key,
+                name: filename,
+                type: /[^.]*$/.exec(filename)![0],
+                size: this.uploadFileSize,
+                uploadTime: new Date().toLocaleString()
+              }
+
+              this.dataSource.push(uploadedFile)
+              this.dataSource = [...this.dataSource]
+              return true;
             }
-            console.log('Successfully uploaded file.', data);
-            return true;
+
           });
         })
         return new Promise(() => {
