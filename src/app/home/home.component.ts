@@ -12,7 +12,7 @@ import {LOGIN_PAGE, SLASH, UPLOAD_BUCKET_ACL, UPLOAD_CONTENT_DISPOSITION, UPLOAD
 import {NgxSpinnerService} from "ngx-spinner";
 import {S3} from "aws-sdk";
 import {flatMap} from "rxjs/internal/operators";
-import {UploadDialogComponent, UploadDialogComponentData} from "../components/upload-component/upload-dialog.component";
+import {UploadDialogComponent} from "../components/upload-component/upload-dialog.component";
 
 @Component({
   selector: 'app-home',
