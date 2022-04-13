@@ -21,10 +21,10 @@ export class ConfirmDialogModel {
 }
 
 @Component({
-  selector: 'app-dialog',
-  templateUrl: 'dialog.component.html',
+  selector: 'app-confirm-dialog',
+  templateUrl: 'confirm-dialog.component.html',
 })
-export class DialogComponent {
+export class ConfirmDialogComponent {
 
   title: string;
   message: string;
@@ -32,7 +32,7 @@ export class DialogComponent {
   cancelButtonText: string;
 
   constructor(
-    public dialogRef: MatDialogRef<DialogComponent>,
+    public dialogRef: MatDialogRef<ConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogModel
   ) {
     this.title = data.title;

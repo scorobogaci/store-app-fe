@@ -6,9 +6,9 @@ import {ApiService} from "../services/api.service";
 import {DeleteFileRequest, File} from "../types";
 import {AuthService} from "../services/auth.service";
 import {MatDialog} from "@angular/material/dialog";
-import {ConfirmDialogModel, DialogComponent} from "../components/dialog-component/dialog.component";
+import {ConfirmDialogModel, ConfirmDialogComponent} from "../components/dialog-component/confirm-dialog.component";
 import {take} from "rxjs/operators";
-import {LOGIN_PAGE} from "../constants";
+import {LOGIN_PAGE, SLASH, UPLOAD_BUCKET_ACL, UPLOAD_CONTENT_DISPOSITION, UPLOAD_CONTENT_TYPE} from "../constants";
 import {NgxSpinnerService} from "ngx-spinner";
 import {S3} from "aws-sdk";
 import {flatMap} from "rxjs/internal/operators";
@@ -70,7 +70,7 @@ export class HomeComponent implements OnInit {
       cancelButtonText: 'No'
     });
 
-    const dialogRef = this.dialog.open(DialogComponent, {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: dialogData
     })
 
@@ -126,10 +126,10 @@ export class HomeComponent implements OnInit {
           })
           const params = {
             Bucket: userGroup,
-            Key: username.concat('/').concat(filename),
-            ACL: 'public-read',
-            ContentType: 'application/octet-stream',
-            ContentDisposition: 'attachment',
+            Key: username.concat(SLASH).concat(filename),
+            ACL: UPLOAD_BUCKET_ACL,
+            ContentType: UPLOAD_CONTENT_TYPE,
+            ContentDisposition: UPLOAD_CONTENT_DISPOSITION,
             Body: file
           }
 

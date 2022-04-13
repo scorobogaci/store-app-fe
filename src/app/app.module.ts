@@ -25,7 +25,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatTableModule} from "@angular/material/table";
-import {DialogComponent} from "./components/dialog-component/dialog.component";
+import {ConfirmDialogComponent} from "./components/dialog-component/confirm-dialog.component";
 import {MatDialogModule} from "@angular/material/dialog";
 import {NgxSpinnerModule} from "ngx-spinner";
 import {MatTooltipModule} from "@angular/material/tooltip";
@@ -38,7 +38,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     HomeComponent,
     ForgotPasswordComponent,
     AddUserComponent,
-    DialogComponent
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
