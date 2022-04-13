@@ -5,13 +5,14 @@ import {noop} from "rxjs";
 import {ApiService} from "../services/api.service";
 import {DeleteFileRequest, File} from "../types";
 import {AuthService} from "../services/auth.service";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ConfirmDialogModel, ConfirmDialogComponent} from "../components/dialog-component/confirm-dialog.component";
 import {take} from "rxjs/operators";
 import {LOGIN_PAGE, SLASH, UPLOAD_BUCKET_ACL, UPLOAD_CONTENT_DISPOSITION, UPLOAD_CONTENT_TYPE} from "../constants";
 import {NgxSpinnerService} from "ngx-spinner";
 import {S3} from "aws-sdk";
 import {flatMap} from "rxjs/internal/operators";
+import {UploadDialogComponent, UploadDialogComponentData} from "../components/upload-component/upload-dialog.component";
 
 @Component({
   selector: 'app-home',
@@ -27,6 +28,7 @@ export class HomeComponent implements OnInit {
 
   private dialogTitle = "You're about to delete a file from company's storage"
   private dialogMessage = "Are you sure you want to perform this action ?"
+  private uploadDialogRef: MatDialogRef<UploadDialogComponent> | undefined
 
   constructor(private router: Router,
               private apiService: ApiService,
@@ -99,10 +101,26 @@ export class HomeComponent implements OnInit {
   public onFileSelected(): void {
     const inputNode: any = document.querySelector('#file');
     if (typeof (FileReader) !== 'undefined') {
+      console.log("got here")
       const reader = new FileReader();
       reader.readAsArrayBuffer(inputNode.files[0]);
       const fileName = inputNode.files[0].name
       reader.onload = (e: any) => {
+        console.log("file loaded")
+        this.uploadDialogRef = this.dialog.open(UploadDialogComponent, {
+          data: {
+            title: 'Uploading ...',
+            fileName: fileName,
+            progress: 0
+          },
+          width: '500px',
+          height: '250px'
+        })
+
+        this.uploadDialogRef.afterClosed().subscribe(value => {
+          console.log("dialog closed with value : ", value)
+        })
+
         this.uploadFile(e.target.result, fileName).then(noop)
       };
     }
@@ -135,6 +153,9 @@ export class HomeComponent implements OnInit {
 
           s3Client.upload(params).on('httpUploadProgress', (event) => {
             console.log(event.loaded + ' of ' + event.total + ' Bytes');
+            if (this.uploadDialogRef && this.uploadDialogRef.componentInstance) {
+              this.uploadDialogRef.componentInstance.data.progress = (100 * event.loaded) / event.total
+            }
           }).send((err: any, data: any) => {
             if (err) {
               console.log('There was an error uploading your file: ', err);

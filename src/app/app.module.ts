@@ -29,6 +29,8 @@ import {ConfirmDialogComponent} from "./components/dialog-component/confirm-dial
 import {MatDialogModule} from "@angular/material/dialog";
 import {NgxSpinnerModule} from "ngx-spinner";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {UploadDialogComponent} from "./components/upload-component/upload-dialog.component";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     HomeComponent,
     ForgotPasswordComponent,
     AddUserComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    UploadDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -59,6 +62,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     MatDialogModule,
     NgxSpinnerModule,
     MatTooltipModule,
+    MatProgressBarModule,
   ],
   exports: [
     MatInputModule
