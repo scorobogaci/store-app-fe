@@ -25,7 +25,6 @@
     "ngx-spinner": "^13.1.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
-    "util": "^0.12.4",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
