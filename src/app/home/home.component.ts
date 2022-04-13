@@ -101,12 +101,10 @@ export class HomeComponent implements OnInit {
   public onFileSelected(): void {
     const inputNode: any = document.querySelector('#file');
     if (typeof (FileReader) !== 'undefined') {
-      console.log("got here")
       const reader = new FileReader();
       reader.readAsArrayBuffer(inputNode.files[0]);
       const fileName = inputNode.files[0].name
       reader.onload = (e: any) => {
-        console.log("file loaded")
         this.uploadDialogRef = this.dialog.open(UploadDialogComponent, {
           data: {
             title: 'Uploading ...',
@@ -114,10 +112,12 @@ export class HomeComponent implements OnInit {
             progress: 0
           },
           width: '500px',
-          height: '250px'
+          height: '250px',
+          disableClose: true
         })
 
         this.uploadDialogRef.afterClosed().subscribe(value => {
+          // perform logic to cancel upload
           console.log("dialog closed with value : ", value)
         })
 
