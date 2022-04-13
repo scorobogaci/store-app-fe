@@ -42,7 +42,8 @@
         <td mat-cell *matCellDef="let element">
           <div style="display: flex; justify-content: space-between;">
             <p style="color: green;cursor: pointer" (click)="downloadFile(element.key)">Download</p>
-            <p style="color: red;cursor: pointer" (click)="deleteFile(element.key,element.name)" *ngIf="isCompanyAdministrator">
+            <p style="color: red;cursor: pointer" (click)="deleteFile(element.key,element.name)"
+               *ngIf="hasDeletePermission(element.key)">
               Delete</p>
           </div>
         </td>

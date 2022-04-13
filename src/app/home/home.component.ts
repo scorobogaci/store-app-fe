@@ -22,12 +22,13 @@ import {UploadDialogComponent} from "../components/upload-component/upload-dialo
 export class HomeComponent implements OnInit {
   public displayedColumns: string[] = ['name', 'type', 'uploadTime', 'size', 'actions'];
   public dataSource: File[] = [];
-  public username: string = ''
-  public displayWelcomeUsername = ''
-  public isCompanyAdministrator = false
+  public nickName: string = '';
+  public displayWelcomeUsername = '';
+  public isCompanyAdministrator = false;
 
   private dialogTitle = "You're about to delete a file from company's storage"
   private uploadDialogRef: MatDialogRef<UploadDialogComponent> | undefined
+  private username = ''
 
   constructor(private router: Router,
               private apiService: ApiService,
@@ -46,9 +47,9 @@ export class HomeComponent implements OnInit {
     })
 
     this.authService.getNickName().subscribe(username => {
-      this.username = username
-      if (this.username !== 'not_set') {
-        this.displayWelcomeUsername = this.username
+      this.nickName = username
+      if (this.nickName !== 'not_set') {
+        this.displayWelcomeUsername = this.nickName
       }
 
     }, error => {
@@ -60,6 +61,10 @@ export class HomeComponent implements OnInit {
       this.spinner.hide().then(noop)
     }, error => {
       console.log("Error on getting company files", error)
+    })
+
+    this.authService.getUsername().subscribe(username => {
+      this.username = username
     })
 
   }
@@ -172,6 +177,10 @@ export class HomeComponent implements OnInit {
     }, error => {
       console.log("Error while getting AWS Temporary credentials : ", error)
     })
+  }
+
+  public hasDeletePermission(key: string): boolean {
+    return this.isCompanyAdministrator ? true : key.includes(this.username)
   }
 
 }
