@@ -18,8 +18,8 @@ export class UploadDialogComponent {
 
   }
 
-  onDismiss(): void {
-    this.dialogRef.close(false);
+  onDismiss(value: string): void {
+    this.dialogRef.close(value);
   }
 
 }

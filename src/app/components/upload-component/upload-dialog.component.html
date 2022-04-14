@@ -11,5 +11,5 @@
 
 <div mat-dialog-actions style="justify-content: center">
   <button mat-raised-button color="{{data.progress < 100 ? 'accent':'primary'}}"
-          (click)="onDismiss()">{{data.progress < 100 ? 'Cancel upload' : 'Close'}}</button>
+          (click)="onDismiss(data.progress < 100 ? 'abort' : 'close')">{{data.progress < 100 ? 'Cancel upload' : 'Close'}}</button>
 </div>

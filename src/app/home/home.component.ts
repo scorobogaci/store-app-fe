@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
   private uploadDialogRef: MatDialogRef<UploadDialogComponent> | undefined
   private username = ''
   private uploadFileSize = 0
+  private managedUpload: S3.ManagedUpload | undefined
 
   constructor(private router: Router,
               private apiService: ApiService,
@@ -127,8 +128,11 @@ export class HomeComponent implements OnInit {
         })
 
         this.uploadDialogRef.afterClosed().subscribe(value => {
-          // perform logic to cancel upload
           console.log("dialog closed with value : ", value)
+          if (value === 'abort') {
+            this.managedUpload!.abort()
+            console.log("uploading should be canceled")
+          }
         })
 
         this.uploadFile(e.target.result, fileName).then(noop)
@@ -152,6 +156,7 @@ export class HomeComponent implements OnInit {
             secretAccessKey: credentials.secretAccessKey,
             sessionToken: credentials.sessionToken
           })
+
           const params = {
             Bucket: userGroup,
             Key: username.concat(SLASH).concat(filename),
@@ -161,14 +166,16 @@ export class HomeComponent implements OnInit {
             Body: file
           }
 
-          s3Client.upload(params).on('httpUploadProgress', (event) => {
+          this.managedUpload = s3Client.upload(params)
+
+          this.managedUpload.on('httpUploadProgress', (event) => {
             console.log(event.loaded + ' of ' + event.total + ' Bytes');
             if (this.uploadDialogRef && this.uploadDialogRef.componentInstance) {
               this.uploadDialogRef.componentInstance.data.progress = (100 * event.loaded) / event.total
             }
           }).send((err: any, data: any) => {
             if (err) {
-              console.log('There was an error uploading your file: ', err);
+              console.log('Upload canceled : ', err);
               return false;
             } else {
               console.log('Successfully uploaded file.', data);
