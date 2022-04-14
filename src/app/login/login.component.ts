@@ -13,7 +13,7 @@ import {
   RESET_PASSWORD_PAGE
 } from "../constants";
 import {SnackService} from "../services/snack.service";
-import {take} from "rxjs/operators";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-login',
@@ -30,7 +30,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router,
               private authService: AuthService,
-              private snackService: SnackService
+              private snackService: SnackService,
+              private spinner: NgxSpinnerService
   ) {
   }
 
@@ -40,26 +41,31 @@ export class LoginComponent implements OnInit {
   public signIn(container: HTMLElement): void {
     if (this.form.valid) {
       this.disableSubmitButton = true
+      this.spinner.show().then(noop)
       Auth.signIn(this.form.controls['username'].value, this.form.controls['password'].value).then((session: any) => {
         if (session) {
           switch (session.challengeName) {
             case "NEW_PASSWORD_REQUIRED":
               localStorage.setItem("username", this.form.controls['username'].value)
+              this.spinner.hide().then(noop)
               this.router.navigate([RESET_PASSWORD_PAGE]).then(noop)
               break
             default:
               this.authService.getUserGroup().subscribe(userGroup => {
+                this.spinner.hide().then(noop)
                 if (ADMINISTRATORS_GROUP === userGroup) {
                   this.router.navigate([ADD_USER_PAGE]).then(noop)
                 } else {
                   this.router.navigate([HOME_PAGE]).then(noop)
                 }
               })
+              this.spinner.hide().then(noop)
               this.router.navigate([HOME_PAGE]).then(noop)
           }
         }
       }, (error) => {
         console.log("Sign in error : ", error)
+        this.spinner.hide().then(noop)
         this.disableSubmitButton = false
         this.snackService.displaySnack(container, error, 'Got It')
       })

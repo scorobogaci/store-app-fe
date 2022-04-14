@@ -6,6 +6,8 @@ import {AddUserRequest, Company} from "../types";
 import {MatSnackBar, MatSnackBarRef, SimpleSnackBar} from "@angular/material/snack-bar";
 import {AppOverlayContainer} from "../services/app-overlay-container";
 import {EMPTY_STRING} from "../constants";
+import {NgxSpinnerService} from "ngx-spinner";
+import {noop} from "rxjs";
 
 @Component({
   selector: 'app-add-user',
@@ -16,11 +18,11 @@ export class AddUserComponent implements OnInit {
   private snackbarRef: MatSnackBarRef<SimpleSnackBar> | undefined;
   private gotItAction = 'Got it!'
   private closeAction = 'Close'
+
+  // https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
   private companyIdentifierRegex = new RegExp('^((?!xn--)(?!.*-s3alias)[a-z0-9][a-z0-9-]{1,61}[a-z0-9])$')
   public blockSubmitButton = false
   public displayNewCompanyCreationInput = false
-
-  // https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
 
   form: FormGroup = new FormGroup({
     email: new FormControl(EMPTY_STRING, [Validators.required]),
@@ -36,15 +38,21 @@ export class AddUserComponent implements OnInit {
   constructor(private authService: AuthService,
               private apiService: ApiService,
               private snackBar: MatSnackBar,
+              private spinner: NgxSpinnerService,
               private appOverlayContainer: AppOverlayContainer) {
   }
 
   ngOnInit(): void {
+    this.spinner.show().then(noop)
     this.apiService.getCompanies().subscribe(
       response => {
         this.companies = response.companies
+        this.spinner.hide().then(noop)
       },
-      error => console.log('error : ', error))
+      error => {
+        this.spinner.hide().then(noop)
+        console.log('error : ', error)
+      })
 
     this.form.get('companySelect')!.valueChanges.subscribe(value => {
       this.displayNewCompanyCreationInput = 'new' === value;
@@ -89,13 +97,15 @@ export class AddUserComponent implements OnInit {
       }
     }
 
-    console.log("addUserRequest : ", addUserRequest)
     this.blockSubmitButton = true
+    this.spinner.show().then(noop)
     this.apiService.addUser(addUserRequest).subscribe(
       () => {
+        this.spinner.hide().then(noop)
         this.displaySnack(container, "Congratulations! New user has been onboarded", this.closeAction)
       },
       error => {
+        this.spinner.hide().then(noop)
         this.blockSubmitButton = false
         console.log("error : ", error)
         this.displaySnack(container, error.error.errorMessage, this.gotItAction)
