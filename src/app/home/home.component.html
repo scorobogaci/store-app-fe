@@ -15,6 +15,7 @@
   </div>
 
   <div class="table-container">
+
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
       <ng-container matColumnDef="name">
@@ -42,7 +43,7 @@
         <td mat-cell *matCellDef="let element">
           <div style="display: flex; justify-content: space-between;">
             <p style="color: green;cursor: pointer" (click)="downloadFile(element.key)">Download</p>
-            <p style="color: red;cursor: pointer" (click)="deleteFile(element.key,element.name)"
+            <p style="color: red;cursor: pointer" (click)="deleteFile(element)"
                *ngIf="hasDeletePermission(element.key)">
               Delete</p>
           </div>
@@ -50,7 +51,8 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row [ngClass]="{'highlight-row': row.markedForDelete}"
+          *matRowDef="let row; columns: displayedColumns; let entry;"></tr>
     </table>
   </div>
 </div>

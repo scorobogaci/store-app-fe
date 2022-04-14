@@ -42,4 +42,5 @@ export interface File {
   type: string;
   size: number;
   uploadTime: string;
+  markedForDelete: boolean;
 }

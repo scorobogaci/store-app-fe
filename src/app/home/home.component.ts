@@ -70,9 +70,10 @@ export class HomeComponent implements OnInit {
 
   }
 
-  public deleteFile(key: string, fileName: string): void {
+  public deleteFile(file: File): void {
 
-    const dialogMessage = "Delete ".concat(fileName).concat(' ?')
+    file.markedForDelete = true
+    const dialogMessage = "Delete ".concat(file.name).concat(' ?')
     const dialogData = new ConfirmDialogModel(this.dialogTitle, dialogMessage);
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -82,14 +83,16 @@ export class HomeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
         this.spinner.show().then(noop)
-        const deleteFileRequest: DeleteFileRequest = {key: key}
+        const deleteFileRequest: DeleteFileRequest = {key: file.key}
         this.apiService.deleteFile(deleteFileRequest).pipe(take(1)).subscribe(() => {
-          this.dataSource = this.dataSource.filter(element => element.key !== key)
+          this.dataSource = this.dataSource.filter(element => element.key !== file.key)
           this.spinner.hide().then(noop)
         }, error => {
           this.spinner.hide().then(noop)
           console.log("Delete file error : ", error)
         })
+      } else {
+        file.markedForDelete = false
       }
     })
   }
@@ -174,7 +177,8 @@ export class HomeComponent implements OnInit {
                 name: filename,
                 type: /[^.]*$/.exec(filename)![0],
                 size: this.uploadFileSize,
-                uploadTime: new Date().toLocaleString()
+                uploadTime: new Date().toLocaleString(),
+                markedForDelete: false
               }
 
               this.dataSource.push(uploadedFile)

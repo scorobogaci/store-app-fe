@@ -45,3 +45,7 @@ table {
   color: #1a084c;
   margin-bottom:5px;
 }
+
+.highlight-row {
+  background-color:#D9D9D9;
+}
