@@ -8,7 +8,15 @@ import {AuthService} from "../services/auth.service";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ConfirmDialogModel, ConfirmDialogComponent} from "../components/dialog-component/confirm-dialog.component";
 import {take} from "rxjs/operators";
-import {LOGIN_PAGE, SLASH, UPLOAD_BUCKET_ACL, UPLOAD_CONTENT_DISPOSITION, UPLOAD_CONTENT_TYPE} from "../constants";
+import {
+  AWS_TEMPORARY_CREDENTIALS_ERROR_MESSAGE, DELETE_COMPONENT_DIALOG_TITLE, EMPTY_STRING,
+  LOGIN_PAGE,
+  SLASH,
+  UPLOAD_BUCKET_ACL, UPLOAD_COMPONENT_HEIGHT, UPLOAD_COMPONENT_TITLE,
+  UPLOAD_COMPONENT_WIDTH,
+  UPLOAD_CONTENT_DISPOSITION,
+  UPLOAD_CONTENT_TYPE
+} from "../constants";
 import {NgxSpinnerService} from "ngx-spinner";
 import {S3} from "aws-sdk";
 import {flatMap} from "rxjs/internal/operators";
@@ -22,13 +30,11 @@ import {UploadDialogComponent} from "../components/upload-component/upload-dialo
 export class HomeComponent implements OnInit {
   public displayedColumns: string[] = ['name', 'type', 'uploadTime', 'size', 'actions'];
   public dataSource: File[] = [];
-  public nickName: string = '';
-  public displayWelcomeUsername = '';
+  public nickName: string = EMPTY_STRING;
+  public displayWelcomeUsername = EMPTY_STRING;
   public isCompanyAdministrator = false;
-
-  private dialogTitle = "You're about to delete a file from company's storage"
   private uploadDialogRef: MatDialogRef<UploadDialogComponent> | undefined
-  private username = ''
+  private username = EMPTY_STRING
   private uploadFileSize = 0
   private managedUpload: S3.ManagedUpload | undefined
 
@@ -75,7 +81,7 @@ export class HomeComponent implements OnInit {
 
     file.markedForDelete = true
     const dialogMessage = "Delete ".concat(file.name).concat(' ?')
-    const dialogData = new ConfirmDialogModel(this.dialogTitle, dialogMessage);
+    const dialogData = new ConfirmDialogModel(DELETE_COMPONENT_DIALOG_TITLE, dialogMessage);
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: dialogData
@@ -118,20 +124,18 @@ export class HomeComponent implements OnInit {
       reader.onload = (e: any) => {
         this.uploadDialogRef = this.dialog.open(UploadDialogComponent, {
           data: {
-            title: 'Uploading ...',
+            title: UPLOAD_COMPONENT_TITLE,
             fileName: fileName,
             progress: 0
           },
-          width: '500px',
-          height: '250px',
+          width: UPLOAD_COMPONENT_WIDTH,
+          height: UPLOAD_COMPONENT_HEIGHT,
           disableClose: true
         })
 
         this.uploadDialogRef.afterClosed().subscribe(value => {
-          console.log("dialog closed with value : ", value)
           if (value === 'abort') {
             this.managedUpload!.abort()
-            console.log("uploading should be canceled")
           }
         })
 
@@ -169,7 +173,8 @@ export class HomeComponent implements OnInit {
           this.managedUpload = s3Client.upload(params)
 
           this.managedUpload.on('httpUploadProgress', (event) => {
-            console.log(event.loaded + ' of ' + event.total + ' Bytes');
+            // uncomment this line if you want to track the uploading by bytes
+            //console.log(event.loaded + ' of ' + event.total + ' Bytes');
             if (this.uploadDialogRef && this.uploadDialogRef.componentInstance) {
               this.uploadDialogRef.componentInstance.data.progress = (100 * event.loaded) / event.total
             }
@@ -178,7 +183,6 @@ export class HomeComponent implements OnInit {
               console.log('Upload canceled : ', err);
               return false;
             } else {
-              console.log('Successfully uploaded file.', data);
               const uploadedFile: File = {
                 key: data.Key,
                 name: filename,
@@ -200,7 +204,7 @@ export class HomeComponent implements OnInit {
       })).pipe(take(1)).subscribe()
 
     }, error => {
-      console.log("Error while getting AWS Temporary credentials : ", error)
+      console.log(AWS_TEMPORARY_CREDENTIALS_ERROR_MESSAGE, error)
     })
   }
 

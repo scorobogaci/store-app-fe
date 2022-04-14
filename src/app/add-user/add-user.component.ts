@@ -5,7 +5,7 @@ import {ApiService} from "../services/api.service";
 import {AddUserRequest, Company} from "../types";
 import {MatSnackBar, MatSnackBarRef, SimpleSnackBar} from "@angular/material/snack-bar";
 import {AppOverlayContainer} from "../services/app-overlay-container";
-import {EMPTY_STRING} from "../constants";
+import {CLOSE_ACTION, EMPTY_STRING, GOT_IT_ACTION, NEW_USER_ONBOARDED_SUCCESS_MESSAGE} from "../constants";
 import {NgxSpinnerService} from "ngx-spinner";
 import {noop} from "rxjs";
 
@@ -16,15 +16,15 @@ import {noop} from "rxjs";
 })
 export class AddUserComponent implements OnInit {
   private snackbarRef: MatSnackBarRef<SimpleSnackBar> | undefined;
-  private gotItAction = 'Got it!'
-  private closeAction = 'Close'
+  private gotItAction = GOT_IT_ACTION
+  private closeAction = CLOSE_ACTION
 
   // https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
   private companyIdentifierRegex = new RegExp('^((?!xn--)(?!.*-s3alias)[a-z0-9][a-z0-9-]{1,61}[a-z0-9])$')
   public blockSubmitButton = false
   public displayNewCompanyCreationInput = false
 
-  form: FormGroup = new FormGroup({
+  public form: FormGroup = new FormGroup({
     email: new FormControl(EMPTY_STRING, [Validators.required]),
     username: new FormControl(EMPTY_STRING,),
     companySelect: new FormControl(EMPTY_STRING, [Validators.required]),
@@ -33,7 +33,7 @@ export class AddUserComponent implements OnInit {
     companyIdentifier: new FormControl(EMPTY_STRING, [Validators.required, Validators.pattern(this.companyIdentifierRegex)])
   });
 
-  companies: Company[] = []
+  public companies: Company[] = []
 
   constructor(private authService: AuthService,
               private apiService: ApiService,
@@ -102,12 +102,11 @@ export class AddUserComponent implements OnInit {
     this.apiService.addUser(addUserRequest).subscribe(
       () => {
         this.spinner.hide().then(noop)
-        this.displaySnack(container, "Congratulations! New user has been onboarded", this.closeAction)
+        this.displaySnack(container, NEW_USER_ONBOARDED_SUCCESS_MESSAGE, this.closeAction)
       },
       error => {
         this.spinner.hide().then(noop)
         this.blockSubmitButton = false
-        console.log("error : ", error)
         this.displaySnack(container, error.error.errorMessage, this.gotItAction)
       }
     )

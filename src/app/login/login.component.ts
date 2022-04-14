@@ -8,7 +8,7 @@ import {
   ADD_USER_PAGE,
   ADMINISTRATORS_GROUP,
   EMPTY_STRING,
-  FORGOT_PASSWORD_PAGE,
+  FORGOT_PASSWORD_PAGE, GOT_IT_ACTION,
   HOME_PAGE,
   RESET_PASSWORD_PAGE
 } from "../constants";
@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit {
         console.log("Sign in error : ", error)
         this.spinner.hide().then(noop)
         this.disableSubmitButton = false
-        this.snackService.displaySnack(container, error, 'Got It')
+        this.snackService.displaySnack(container, error, GOT_IT_ACTION)
       })
     }
 

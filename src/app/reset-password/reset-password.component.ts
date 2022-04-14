@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Auth} from "aws-amplify";
 import {Router} from "@angular/router";
 import {noop} from "rxjs";
-import {EMPTY_STRING, HOME_PAGE} from "../constants";
+import {EMPTY_STRING, GOT_IT_ACTION, HOME_PAGE} from "../constants";
 import {SnackService} from "../services/snack.service";
 
 @Component({
@@ -26,11 +26,10 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   public resetPassword(container: HTMLElement): void {
-    console.log("this reset password invoked")
 
     if (this.form.valid) {
       if (this.form.controls['newPassword'].value !== this.form.controls['confirmNewPassword'].value) {
-        this.snackService.displaySnack(container, 'Passwords mismatch. Please try again', 'Got It')
+        this.snackService.displaySnack(container, 'Passwords mismatch. Please try again', GOT_IT_ACTION)
         return
       }
       this.disableSubmitButton = true
@@ -42,16 +41,16 @@ export class ResetPasswordComponent implements OnInit {
             }).catch(error => {
               this.disableSubmitButton = false
               console.log("Error on completing password reset", error);
-              this.snackService.displaySnack(container, error, 'Got It')
+              this.snackService.displaySnack(container, error, GOT_IT_ACTION)
             });
           } else {
             this.disableSubmitButton = false
-            this.snackService.displaySnack(container, 'Please contact your system administrator', 'Got It')
+            this.snackService.displaySnack(container, 'Please contact your system administrator', GOT_IT_ACTION)
           }
         }).catch(error => {
         console.log("Error on sign in", error);
         this.disableSubmitButton = false
-        this.snackService.displaySnack(container, 'Please contact your system administrator', 'Got It')
+        this.snackService.displaySnack(container, 'Please contact your system administrator', GOT_IT_ACTION)
       });
     }
   }

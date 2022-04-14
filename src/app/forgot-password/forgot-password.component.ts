@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Auth} from "aws-amplify";
 import {Router} from "@angular/router";
 import {noop} from "rxjs";
-import {EMPTY_STRING, HOME_PAGE} from "../constants";
+import {EMPTY_STRING, GOT_IT_ACTION, HOME_PAGE} from "../constants";
 import {SnackService} from "../services/snack.service";
 
 @Component({
@@ -46,7 +46,7 @@ export class ForgotPasswordComponent implements OnInit {
         .catch(err => {
           console.log('Error while sending verification flow', err)
           this.disableSendVerificationCodeButton = false
-          this.snackService.displaySnack(container, 'Please contact your system administrator', 'Got It')
+          this.snackService.displaySnack(container, 'Please contact your system administrator', GOT_IT_ACTION)
         });
     }
   }
@@ -54,7 +54,7 @@ export class ForgotPasswordComponent implements OnInit {
   public resetPassword(container: HTMLElement): void {
     if (this.resetPasswordForm.valid) {
       if (this.resetPasswordForm.controls['newPassword'].value !== this.resetPasswordForm.controls['confirmNewPassword'].value) {
-        this.snackService.displaySnack(container, 'Passwords mismatch. Please try again', 'Got It')
+        this.snackService.displaySnack(container, 'Passwords mismatch. Please try again', GOT_IT_ACTION)
         return
       }
 
@@ -66,7 +66,7 @@ export class ForgotPasswordComponent implements OnInit {
         })
         .catch(err => {
           console.log('Error while password reset', err)
-          this.snackService.displaySnack(container, err, 'Got It')
+          this.snackService.displaySnack(container, err, GOT_IT_ACTION)
           this.disableResetPasswordButton = false
         });
     }
