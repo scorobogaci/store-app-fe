@@ -43,14 +43,11 @@ export class AddUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.spinner.show().then(noop)
     this.apiService.getCompanies().subscribe(
       response => {
         this.companies = response.companies
-        this.spinner.hide().then(noop)
       },
       error => {
-        this.spinner.hide().then(noop)
         console.log('error : ', error)
       })
 
