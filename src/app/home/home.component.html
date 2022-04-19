@@ -1,17 +1,10 @@
 <div class="content-container">
   <div>
-    <h3> Welcome<span *ngIf="displayWelcomeUsername">, </span>{{displayWelcomeUsername}}</h3>
-    <button mat-raised-button color="primary" style="margin-right: 20px" (click)="fileInput.click()">
-      <mat-icon aria-hidden="false" aria-label="Example home icon">upload</mat-icon>
-      Upload file
+    <h3 style="display: inline-block;padding-left: 30px"> Welcome<span *ngIf="displayWelcomeUsername">, </span>{{displayWelcomeUsername}}</h3>
+    <button mat-raised-button color="accent" (click)="logout()"style="float:right;">
+      <mat-icon aria-hidden="false">logout</mat-icon>
+      Log out
     </button>
-    <input hidden (change)="onFileSelected()" #fileInput type="file" id="file" onclick="this.value = null">
-    <div style="float: right;padding-bottom: 20px">
-      <button mat-raised-button color="accent" (click)="logout()">
-        <mat-icon aria-hidden="false" aria-label="Example home icon">logout</mat-icon>
-        Log out
-      </button>
-    </div>
   </div>
 
   <div class="table-container">
@@ -50,6 +43,22 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="table-actions">
+        <th mat-header-cell *matHeaderCellDef
+            [attr.colspan]="5">
+          <mat-form-field style="padding-right: 80px">
+            <input type="text" matInput placeholder="Search file" formControlName="username">
+          </mat-form-field>
+
+          <button mat-stroked-button (click)="fileInput.click()">
+            <mat-icon aria-hidden="false">upload</mat-icon>
+            Upload file
+          </button>
+          <input hidden (change)="onFileSelected()" #fileInput type="file" id="file" onclick="this.value = null">
+        </th>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['table-actions'];sticky:true"></tr>
       <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
       <tr mat-row [ngClass]="{'highlight-row': row.markedForDelete}"
           *matRowDef="let row; columns: displayedColumns; let entry;"></tr>
