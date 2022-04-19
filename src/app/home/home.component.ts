@@ -84,6 +84,7 @@ export class HomeComponent implements OnInit {
     const dialogData = new ConfirmDialogModel(DELETE_COMPONENT_DIALOG_TITLE, dialogMessage);
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      disableClose: true,
       data: dialogData
     })
 
