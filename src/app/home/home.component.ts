@@ -201,8 +201,8 @@ export class HomeComponent implements OnInit {
                 markedForDelete: false
               }
 
-              // this.dataSource.push(uploadedFile)
-              // this.dataSource = [...this.dataSource]
+              this.dataSource.data.push(uploadedFile)
+              this.dataSource.data = [...this.dataSource.data]
               return true;
             }
 
