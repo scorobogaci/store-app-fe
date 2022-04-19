@@ -31,6 +31,7 @@ import {NgxSpinnerModule} from "ngx-spinner";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {UploadDialogComponent} from "./components/upload-component/upload-dialog.component";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatSortModule} from "@angular/material/sort";
 
 @NgModule({
   declarations: [
@@ -43,27 +44,28 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
     ConfirmDialogComponent,
     UploadDialogComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    MatCardModule,
-    MatInputModule,
-    MatButtonModule,
-    HttpClientModule,
-    MatSelectModule,
-    MatSnackBarModule,
-    MatMenuModule,
-    MatIconModule,
-    MatCheckboxModule,
-    MatFormFieldModule,
-    MatTableModule,
-    MatDialogModule,
-    NgxSpinnerModule,
-    MatTooltipModule,
-    MatProgressBarModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        MatCardModule,
+        MatInputModule,
+        MatButtonModule,
+        HttpClientModule,
+        MatSelectModule,
+        MatSnackBarModule,
+        MatMenuModule,
+        MatIconModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatTableModule,
+        MatDialogModule,
+        NgxSpinnerModule,
+        MatTooltipModule,
+        MatProgressBarModule,
+        MatSortModule,
+    ],
   exports: [
     MatInputModule
   ],

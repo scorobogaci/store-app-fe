@@ -49,3 +49,7 @@ table {
 .highlight-row {
   background-color:#D9D9D9;
 }
+
+th.mat-sort-header-sorted {
+  color: black;
+}

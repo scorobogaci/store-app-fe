@@ -41,6 +41,7 @@ export interface File {
   name: string;
   type: string;
   size: number;
+  formattedSize: string;
   uploadTime: string;
   markedForDelete: boolean;
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {Auth} from "aws-amplify";
 import {noop} from "rxjs";
@@ -21,6 +21,8 @@ import {NgxSpinnerService} from "ngx-spinner";
 import {S3} from "aws-sdk";
 import {flatMap} from "rxjs/internal/operators";
 import {UploadDialogComponent} from "../components/upload-component/upload-dialog.component";
+import {MatSort} from "@angular/material/sort";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-home',
@@ -28,8 +30,12 @@ import {UploadDialogComponent} from "../components/upload-component/upload-dialo
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+
+  // @ts-ignore
+  @ViewChild(MatSort) sort: MatSort;
+
   public displayedColumns: string[] = ['name', 'type', 'uploadTime', 'size', 'actions'];
-  public dataSource: File[] = [];
+  public dataSource = new MatTableDataSource<File>([])
   public nickName: string = EMPTY_STRING;
   public displayWelcomeUsername = EMPTY_STRING;
   public isCompanyAdministrator = false;
@@ -65,7 +71,8 @@ export class HomeComponent implements OnInit {
     })
 
     this.apiService.getCompanyFiles().subscribe(response => {
-      this.dataSource = response.companyFiles
+      this.dataSource = new MatTableDataSource(response.companyFiles)
+      this.dataSource.sort = this.sort;
       this.spinner.hide().then(noop)
     }, error => {
       console.log("Error on getting company files", error)
@@ -93,7 +100,7 @@ export class HomeComponent implements OnInit {
         this.spinner.show().then(noop)
         const deleteFileRequest: DeleteFileRequest = {key: file.key}
         this.apiService.deleteFile(deleteFileRequest).pipe(take(1)).subscribe(() => {
-          this.dataSource = this.dataSource.filter(element => element.key !== file.key)
+          this.dataSource = new MatTableDataSource<File>(this.dataSource?.data.filter(element => element.key !== file.key))
           this.spinner.hide().then(noop)
         }, error => {
           this.spinner.hide().then(noop)
@@ -190,11 +197,12 @@ export class HomeComponent implements OnInit {
                 type: /[^.]*$/.exec(filename)![0],
                 size: this.uploadFileSize,
                 uploadTime: new Date().toLocaleString(),
+                formattedSize: this.formatSize(this.uploadFileSize),
                 markedForDelete: false
               }
 
-              this.dataSource.push(uploadedFile)
-              this.dataSource = [...this.dataSource]
+              // this.dataSource.push(uploadedFile)
+              // this.dataSource = [...this.dataSource]
               return true;
             }
 
@@ -213,4 +221,12 @@ export class HomeComponent implements OnInit {
     return this.isCompanyAdministrator ? true : key.includes(this.username)
   }
 
+  private formatSize(bytes: number, decimals = 2): string {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
 }
