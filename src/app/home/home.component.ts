@@ -12,7 +12,7 @@ import {
   AWS_TEMPORARY_CREDENTIALS_ERROR_MESSAGE, DELETE_COMPONENT_DIALOG_TITLE, EMPTY_STRING,
   LOGIN_PAGE,
   SLASH,
-  UPLOAD_BUCKET_ACL, UPLOAD_COMPONENT_HEIGHT, UPLOAD_COMPONENT_TITLE,
+  UPLOAD_BUCKET_ACL, UPLOAD_COMPONENT_HEIGHT, UPLOAD_COMPONENT_REPLACE_FILE_TITLE, UPLOAD_COMPONENT_TITLE,
   UPLOAD_COMPONENT_WIDTH,
   UPLOAD_CONTENT_DISPOSITION,
   UPLOAD_CONTENT_TYPE
@@ -130,24 +130,60 @@ export class HomeComponent implements OnInit {
       const fileName = inputNode.files[0].name
       this.uploadFileSize = inputNode.files[0].size
       reader.onload = (e: any) => {
-        this.uploadDialogRef = this.dialog.open(UploadDialogComponent, {
-          data: {
-            title: UPLOAD_COMPONENT_TITLE,
-            fileName: fileName,
-            progress: 0
-          },
-          width: UPLOAD_COMPONENT_WIDTH,
-          height: UPLOAD_COMPONENT_HEIGHT,
-          disableClose: true
-        })
+        const existingFile = this.dataSource.data.find(file => file.name === fileName)
+        if (existingFile !== undefined) {
 
-        this.uploadDialogRef.afterClosed().subscribe(value => {
-          if (value === 'abort') {
-            this.managedUpload!.abort()
-          }
-        })
+          const dialogData = new ConfirmDialogModel(UPLOAD_COMPONENT_REPLACE_FILE_TITLE, fileName);
 
-        this.uploadFile(e.target.result, fileName).then(noop)
+          const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+            disableClose: true,
+            data: dialogData
+          })
+
+          dialogRef.afterClosed().subscribe(result => {
+            if (result === true) {
+              this.uploadDialogRef = this.dialog.open(UploadDialogComponent, {
+                data: {
+                  title: UPLOAD_COMPONENT_TITLE,
+                  fileName: fileName,
+                  progress: 0
+                },
+                width: UPLOAD_COMPONENT_WIDTH,
+                height: UPLOAD_COMPONENT_HEIGHT,
+                disableClose: true
+              })
+
+              this.uploadDialogRef.afterClosed().subscribe(value => {
+                if (value === 'abort') {
+                  this.managedUpload!.abort()
+                }
+              })
+
+              this.uploadFile(e.target.result, fileName, true).then(noop)
+            }
+          })
+
+        } else {
+          this.uploadDialogRef = this.dialog.open(UploadDialogComponent, {
+            data: {
+              title: UPLOAD_COMPONENT_TITLE,
+              fileName: fileName,
+              progress: 0
+            },
+            width: UPLOAD_COMPONENT_WIDTH,
+            height: UPLOAD_COMPONENT_HEIGHT,
+            disableClose: true
+          })
+
+          this.uploadDialogRef.afterClosed().subscribe(value => {
+            if (value === 'abort') {
+              this.managedUpload!.abort()
+            }
+          })
+
+          this.uploadFile(e.target.result, fileName, false).then(noop)
+        }
+
       };
     }
   }
@@ -162,7 +198,7 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  public async uploadFile(file: any, filename: string): Promise<void> {
+  public async uploadFile(file: any, filename: string, replaceOperation: boolean): Promise<void> {
     Auth.currentCredentials().then((credentials) => {
       this.authService.getUserGroup().pipe(take(1), flatMap(userGroup => {
         this.authService.getUsername().pipe(take(1)).subscribe(username => {
@@ -194,18 +230,21 @@ export class HomeComponent implements OnInit {
               console.log('Upload canceled : ', err);
               return false;
             } else {
-              const uploadedFile: File = {
-                key: data.Key,
-                name: filename,
-                type: /[^.]*$/.exec(filename)![0],
-                size: this.uploadFileSize,
-                uploadTime: new Date().toLocaleString(),
-                formattedSize: this.formatSize(this.uploadFileSize),
-                markedForDelete: false
+              if (!replaceOperation) {
+                const uploadedFile: File = {
+                  key: data.Key,
+                  name: filename,
+                  type: /[^.]*$/.exec(filename)![0],
+                  size: this.uploadFileSize,
+                  uploadTime: new Date().toLocaleString(),
+                  formattedSize: this.formatSize(this.uploadFileSize),
+                  markedForDelete: false
+                }
+
+                this.dataSource.data.push(uploadedFile)
+                this.dataSource.data = [...this.dataSource.data]
               }
 
-              this.dataSource.data.push(uploadedFile)
-              this.dataSource.data = [...this.dataSource.data]
               return true;
             }
 
