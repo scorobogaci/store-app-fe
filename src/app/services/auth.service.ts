@@ -121,6 +121,7 @@ export class AuthService {
 
   public signOut(): void {
     Auth.signOut().then(() => {
+      localStorage.clear()
       this.router.navigate([LOGIN_PAGE]).then(noop)
     })
   }
