@@ -1,13 +1,13 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {Auth} from "aws-amplify";
-import {noop} from "rxjs";
+import {fromEvent, merge, noop, Observable, Observer} from "rxjs";
 import {ApiService} from "../services/api.service";
 import {DeleteFileRequest, File} from "../types";
 import {AuthService} from "../services/auth.service";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ConfirmDialogModel, ConfirmDialogComponent} from "../components/dialog-component/confirm-dialog.component";
-import {take} from "rxjs/operators";
+import {map, take} from "rxjs/operators";
 import {
   AWS_TEMPORARY_CREDENTIALS_ERROR_MESSAGE, DELETE_COMPONENT_DIALOG_TITLE, EMPTY_STRING,
   LOGIN_PAGE,
@@ -23,13 +23,15 @@ import {flatMap} from "rxjs/internal/operators";
 import {UploadDialogComponent} from "../components/upload-component/upload-dialog.component";
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {NetworkErrorComponent, NetworkErrorModel} from "../components/network-error-component/network-error.component";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
 
   // @ts-ignore
   @ViewChild(MatSort) sort: MatSort;
@@ -48,7 +50,11 @@ export class HomeComponent implements OnInit {
               private apiService: ApiService,
               private authService: AuthService,
               private spinner: NgxSpinnerService,
+              private snackBar: MatSnackBar,
               private dialog: MatDialog) {
+  }
+
+  ngAfterViewInit(): void {
   }
 
   ngOnInit(): void {
@@ -80,6 +86,15 @@ export class HomeComponent implements OnInit {
 
     this.authService.getUsername().subscribe(username => {
       this.username = username
+    })
+
+    this.networkStatus().subscribe(isOnline => {
+      if (!isOnline) {
+        this.snackBar.open("Please check your internet connection. Looks like you lost Internet Connection. We'll do our best to continue ...", '', {
+          duration: 5000,
+          panelClass: 'network-status-snack'
+        })
+      }
     })
 
   }
@@ -228,6 +243,16 @@ export class HomeComponent implements OnInit {
           }).send((err: any, data: any) => {
             if (err) {
               console.log('Upload canceled : ', err);
+              this.uploadDialogRef?.close();
+              const dialogData = new NetworkErrorModel("Network error", "Your upload could not be completed due to connection issues. Please check your internet connection and try again.");
+
+              this.dialog.open(NetworkErrorComponent, {
+                disableClose: true,
+                data: dialogData,
+                width: UPLOAD_COMPONENT_WIDTH,
+                height: UPLOAD_COMPONENT_HEIGHT,
+              })
+
               return false;
             } else {
               if (!replaceOperation) {
@@ -275,5 +300,15 @@ export class HomeComponent implements OnInit {
   public applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  private networkStatus() {
+    return merge<boolean>(
+      fromEvent(window, 'offline').pipe(map(() => false)),
+      fromEvent(window, 'online').pipe(map(() => true)),
+      new Observable((sub: Observer<boolean>) => {
+        sub.next(navigator.onLine);
+        sub.complete();
+      }));
   }
 }

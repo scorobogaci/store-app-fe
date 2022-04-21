@@ -1,7 +1,8 @@
 <div class="content-container">
   <div>
-    <h3 style="display: inline-block;padding-left: 30px"> Welcome<span *ngIf="displayWelcomeUsername">, </span>{{displayWelcomeUsername}}</h3>
-    <button mat-raised-button color="accent" (click)="logout()"style="float:right;">
+    <h3 style="display: inline-block;padding-left: 30px"> Welcome<span
+      *ngIf="displayWelcomeUsername">, </span>{{displayWelcomeUsername}}</h3>
+    <button mat-raised-button color="accent" (click)="logout()" style="float:right;">
       <mat-icon aria-hidden="false">logout</mat-icon>
       Log out
     </button>
@@ -36,7 +37,9 @@
         <td mat-cell *matCellDef="let element">
           <div style="display: flex; justify-content: space-between;">
             <mat-icon (click)="downloadFile(element.key)" style="cursor: pointer">download</mat-icon>
-            <mat-icon *ngIf="hasDeletePermission(element.key)" (click)="deleteFile(element)" style="cursor: pointer" color="warn">delete</mat-icon>
+            <mat-icon *ngIf="hasDeletePermission(element.key)" (click)="deleteFile(element)" style="cursor: pointer"
+                      color="warn">delete
+            </mat-icon>
           </div>
         </td>
       </ng-container>

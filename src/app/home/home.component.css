@@ -53,3 +53,7 @@ table {
 th.mat-sort-header-sorted {
   color: black;
 }
+
+.network-status-snack{
+  color: white;
+}

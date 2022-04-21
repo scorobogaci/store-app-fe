@@ -20,5 +20,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;position: re
   margin: 0;
   width: 1000px;
 }
-
+.mat-simple-snackbar span {
+  margin: auto;
+  text-align: center;
+}
 

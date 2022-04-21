@@ -32,6 +32,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {UploadDialogComponent} from "./components/upload-component/upload-dialog.component";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatSortModule} from "@angular/material/sort";
+import {NetworkErrorComponent} from "./components/network-error-component/network-error.component";
 
 @NgModule({
   declarations: [
@@ -42,30 +43,31 @@ import {MatSortModule} from "@angular/material/sort";
     ForgotPasswordComponent,
     AddUserComponent,
     ConfirmDialogComponent,
+    NetworkErrorComponent,
     UploadDialogComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
-        MatCardModule,
-        MatInputModule,
-        MatButtonModule,
-        HttpClientModule,
-        MatSelectModule,
-        MatSnackBarModule,
-        MatMenuModule,
-        MatIconModule,
-        MatCheckboxModule,
-        MatFormFieldModule,
-        MatTableModule,
-        MatDialogModule,
-        NgxSpinnerModule,
-        MatTooltipModule,
-        MatProgressBarModule,
-        MatSortModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatInputModule,
+    MatButtonModule,
+    HttpClientModule,
+    MatSelectModule,
+    MatSnackBarModule,
+    MatMenuModule,
+    MatIconModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatTableModule,
+    MatDialogModule,
+    NgxSpinnerModule,
+    MatTooltipModule,
+    MatProgressBarModule,
+    MatSortModule,
+  ],
   exports: [
     MatInputModule
   ],
