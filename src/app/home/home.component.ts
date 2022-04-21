@@ -31,7 +31,7 @@ import {NetworkErrorComponent, NetworkErrorModel} from "../components/network-er
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit {
 
   // @ts-ignore
   @ViewChild(MatSort) sort: MatSort;
@@ -52,9 +52,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
               private spinner: NgxSpinnerService,
               private snackBar: MatSnackBar,
               private dialog: MatDialog) {
-  }
-
-  ngAfterViewInit(): void {
   }
 
   ngOnInit(): void {
