@@ -1,0 +1,21 @@
+export const ADMINISTRATORS_GROUP = 'administrator'
+export const HOME_PAGE = 'home'
+export const RESET_PASSWORD_PAGE = 'reset-password'
+export const ADD_USER_PAGE = 'add-user'
+export const FORGOT_PASSWORD_PAGE = 'forgot-password'
+export const LOGIN_PAGE = 'login'
+export const EMPTY_STRING = ''
+export const SLASH = '/'
+export const UPLOAD_CONTENT_TYPE = 'application/octet-stream'
+export const UPLOAD_CONTENT_DISPOSITION = 'attachment'
+export const UPLOAD_BUCKET_ACL = 'public-read'
+export const UPLOAD_COMPONENT_WIDTH = '500px'
+export const UPLOAD_COMPONENT_HEIGHT = '250px'
+export const UPLOAD_COMPONENT_TITLE = 'Uploading ...'
+export const UPLOAD_COMPONENT_REPLACE_FILE_TITLE = 'Would you like to replace the existing file ?'
+export const AWS_TEMPORARY_CREDENTIALS_ERROR_MESSAGE = 'Error while getting AWS Temporary credentials : '
+export const DELETE_COMPONENT_DIALOG_TITLE = "You're about to delete a file from company's storage"
+export const CLOSE_ACTION = "Close"
+export const GOT_IT_ACTION = "Got It!"
+export const NEW_USER_ONBOARDED_SUCCESS_MESSAGE = "Congratulations! New user has been onboarded"
+

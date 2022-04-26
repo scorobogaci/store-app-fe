@@ -1,5 +1,59 @@
 :host {
-  display: flex;
-  justify-content: center;
-  margin: 100px 0px;
+  background-color: white;
+}
+
+table {
+  width: 100%;
+  padding: 40px;
+  max-height: 500px;
+}
+
+.content-container {
+  padding: 40px;
+  background-color: #d9d9d9;
+}
+
+.mat-column-name {
+  width: 30%;
+}
+
+.mat-column-type {
+  width: 10%;
+}
+
+.mat-column-uploadTime {
+  width: 30%;
+}
+
+.mat-column-size {
+  width: 15%;
+}
+
+.mat-column-actions {
+  width: 15%;
+}
+
+.table-container {
+  max-height: 85vh;
+  width: 100%;
+  overflow: auto;
+}
+
+.mat-header-cell, mat-header-row, .mat-header-cell-def{
+  font-weight:bold;
+  font-size:14px;
+  color: #1a084c;
+  margin-bottom:5px;
+}
+
+.highlight-row {
+  background-color:#D9D9D9;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+.network-status-snack{
+  color: white;
 }

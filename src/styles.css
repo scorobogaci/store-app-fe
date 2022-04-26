@@ -1,5 +1,27 @@
 /*@import '~bootstrap/dist/css/bootstrap.min.css';*/
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body { height: 100%;margin: 0;padding: 0 }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;position: relative }
+
+.app-cdk-overlay-container {
+  position: absolute;
+}
+
+.cdk-overlay-container .mat-snack-bar-container{
+  border-radius: 4px;
+  box-sizing: border-box;
+  display: block;
+  padding: 14px 16px;
+  min-height: 48px;
+  transform-origin: center;
+  max-width: 100%;
+  min-width: 100%;
+  margin: 0;
+  width: 1000px;
+}
+.mat-simple-snackbar span {
+  margin: auto;
+  text-align: center;
+}
+

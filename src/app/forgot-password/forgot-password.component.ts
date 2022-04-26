@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Auth} from "aws-amplify";
 import {Router} from "@angular/router";
 import {noop} from "rxjs";
+import {EMPTY_STRING, GOT_IT_ACTION, HOME_PAGE} from "../constants";
+import {SnackService} from "../services/snack.service";
 
 @Component({
   selector: 'app-forgot-password',
@@ -10,58 +12,64 @@ import {noop} from "rxjs";
   styleUrls: ['./forgot-password.component.css']
 })
 export class ForgotPasswordComponent implements OnInit {
+  public disableSendVerificationCodeButton = false
+  public disableResetPasswordButton = false
 
-  public verificationCodeErrorMessage: string
-  public resetPasswordErrorMessage: string
 
-  sendVerificationCodeForm: FormGroup = new FormGroup({
-    email: new FormControl(),
+  public sendVerificationCodeForm: FormGroup = new FormGroup({
+    email: new FormControl(EMPTY_STRING, Validators.required),
   });
 
-  resetPasswordForm: FormGroup = new FormGroup({
-    confirmationCode: new FormControl(),
-    newPassword: new FormControl(),
-    confirmNewPassword: new FormControl(),
+  public resetPasswordForm: FormGroup = new FormGroup({
+    confirmationCode: new FormControl(EMPTY_STRING, Validators.required),
+    newPassword: new FormControl(EMPTY_STRING, Validators.required),
+    confirmNewPassword: new FormControl(EMPTY_STRING, Validators.required)
   });
 
   public verificationCodeSent: boolean
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private snackService: SnackService) {
     this.verificationCodeSent = false;
-    this.verificationCodeErrorMessage = '';
-    this.resetPasswordErrorMessage = '';
   }
 
   ngOnInit(): void {
   }
 
-  public sendVerificationCode(): void {
-    this.verificationCodeErrorMessage = ''
-    Auth.forgotPassword(this.sendVerificationCodeForm.controls['email'].value)
-      .then(() => {
-        this.verificationCodeSent = true
-      })
-      .catch(err => {
-        console.log('Error while sending verification flow', err)
-        this.verificationCodeErrorMessage = 'Please contact your system administrator'
-      });
-  }
-
-  public resetPassword(): void {
-    this.resetPasswordErrorMessage = '';
-    if (this.resetPasswordForm.controls['newPassword'].value !== this.resetPasswordForm.controls['confirmNewPassword'].value) {
-      this.resetPasswordErrorMessage = 'Passwords mismatch. Please try again'
-      return
+  public sendVerificationCode(container: HTMLElement): void {
+    if (this.sendVerificationCodeForm.controls['email'].valid) {
+      this.disableSendVerificationCodeButton = true
+      Auth.forgotPassword(this.sendVerificationCodeForm.controls['email'].value)
+        .then(() => {
+          this.verificationCodeSent = true
+        })
+        .catch(err => {
+          console.log('Error while sending verification flow', err)
+          this.disableSendVerificationCodeButton = false
+          this.snackService.displaySnack(container, 'Please contact your system administrator', GOT_IT_ACTION)
+        });
     }
-
-    Auth.forgotPasswordSubmit(this.sendVerificationCodeForm.controls['email'].value,
-      this.resetPasswordForm.controls['confirmationCode'].value, this.resetPasswordForm.controls['newPassword'].value)
-      .then(() => {
-        this.router.navigate(['home']).then(noop)
-      })
-      .catch(err => {
-        console.log('Error while password reset', err)
-        this.resetPasswordErrorMessage = err;
-      });
   }
+
+  public resetPassword(container: HTMLElement): void {
+    if (this.resetPasswordForm.valid) {
+      if (this.resetPasswordForm.controls['newPassword'].value !== this.resetPasswordForm.controls['confirmNewPassword'].value) {
+        this.snackService.displaySnack(container, 'Passwords mismatch. Please try again', GOT_IT_ACTION)
+        return
+      }
+
+      this.disableResetPasswordButton = true
+      Auth.forgotPasswordSubmit(this.sendVerificationCodeForm.controls['email'].value,
+        this.resetPasswordForm.controls['confirmationCode'].value, this.resetPasswordForm.controls['newPassword'].value)
+        .then(() => {
+          this.router.navigate([HOME_PAGE]).then(noop)
+        })
+        .catch(err => {
+          console.log('Error while password reset', err)
+          this.snackService.displaySnack(container, err, GOT_IT_ACTION)
+          this.disableResetPasswordButton = false
+        });
+    }
+  }
+
 }
