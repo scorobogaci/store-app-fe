@@ -3,9 +3,9 @@ import {Config} from "./config-definition";
 export const CONFIG_DEV: Config = {
   aws: {
     authenticationFlowType: 'USER_PASSWORD_AUTH',
-    userPoolId: 'us-east-1_E3uZir1cn',
-    userPoolWebClientId: '61cqmeaf94s4ihn1usuuktv9pc',
-    identityPoolId: 'us-east-1:b454a0fa-6b35-4a2f-a2f0-cc3e9f2cac13',
+    userPoolId: 'us-east-1_yI3Fn5sSB',
+    userPoolWebClientId: '6jt1citt04vd89eiut3h765ers',
+    identityPoolId: 'us-east-1:bd1f209d-86a3-4d1e-b2ca-358828f66b46',
     region: 'us-east-1'
   },
   baseApiUrl: 'https://suj66fr391.execute-api.us-east-1.amazonaws.com/prod'
