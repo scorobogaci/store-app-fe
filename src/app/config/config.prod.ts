@@ -5,7 +5,7 @@ export const CONFIG_PROD: Config = {
     authenticationFlowType: 'USER_PASSWORD_AUTH',
     userPoolId: 'us-east-1_xIaH0zt96',
     userPoolWebClientId: '3sce1vehsrrp5va9i0u4qj43kb',
-    identityPoolId:'us-east-1:b454a0fa-6b35-4a2f-a2f0-cc3e9f2cac13',
+    identityPoolId:'us-east-1:71ba9d6e-0f7c-44a2-9ade-c010c384a309',
     region: 'us-east-1'
   },
   baseApiUrl: 'https://suj66fr391.execute-api.us-east-1.amazonaws.com/prod'
