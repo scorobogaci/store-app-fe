@@ -65,7 +65,7 @@ export class HomeComponent implements OnInit {
 
     this.authService.getNickName().subscribe(username => {
       this.nickName = username
-      if (this.nickName !== 'not_set') {
+      if (this.nickName !== '') {
         this.displayWelcomeUsername = this.nickName
       }
 
