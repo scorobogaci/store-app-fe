@@ -8,5 +8,5 @@ export const CONFIG_PROD: Config = {
     identityPoolId:'us-east-1:71ba9d6e-0f7c-44a2-9ade-c010c384a309',
     region: 'us-east-1'
   },
-  baseApiUrl: 'https://suj66fr391.execute-api.us-east-1.amazonaws.com/prod'
+  baseApiUrl: 'https://oep0gz3i94.execute-api.us-east-1.amazonaws.com/prod'
 };
